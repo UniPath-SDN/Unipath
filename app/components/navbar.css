@@ -1,0 +1,51 @@
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 60px;
+  background: rgba(255,255,255,.93);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid #e2eaf2;
+  animation: slideDown .6s ease both;
+}
+
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-icon { width: 44px; height: 44px; border-radius: 12px; background: #1B3A5C; display: flex; align-items: center; justify-content: center; }
+.nav-logo-text { font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 1.5rem; color: #1B3A5C; }
+.nav-logo-text .teal { color: #2FA889; }
+
+.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+.nav-links a { text-decoration: none; font-size: .95rem; font-weight: 600; color: #4a6580; transition: color .2s; }
+.nav-links a:hover { color: #1B3A5C; }
+.nav-links a.active { color: #1B3A5C; font-weight: 800; border-bottom: 2px solid #2FA889; padding-bottom: 2px; }
+
+.nav-cta-btn {
+  background: #2FA889; color: white;
+  padding: 10px 26px; border-radius: 50px;
+  font-weight: 700; font-size: .9rem;
+  box-shadow: 0 4px 16px rgba(47,168,137,.3);
+  text-decoration: none; transition: all .2s;
+  display: inline-block;
+}
+.nav-cta-btn:hover { background: #3cc4a0; transform: translateY(-1px); }
+
+.nav-menu-btn { display: none; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #1B3A5C; }
+
+@media(max-width: 1024px) {
+  nav { padding: 14px 30px; }
+}
+@media(max-width: 768px) {
+  nav { padding: 14px 20px; }
+  .nav-links {
+    display: none; flex-direction: column;
+    position: absolute; top: 100%; right: 0; left: 0;
+    background: white; padding: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,.1); gap: 16px;
+  }
+  .nav-links.open { display: flex !important; }
+  .nav-menu-btn { display: block; }
+}

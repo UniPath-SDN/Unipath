@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
-import HomeClient from './HomeClient'
+import ScholarshipsClient from './[slug]/ScholarshipDetailClient'
 
 export const metadata: Metadata = {
-  title: 'UniPath — منصة المنح الدراسية',
-  description: 'ابحث عن منحتك وقدّم مع فريق UniPath',
+  title: 'المنح الدراسية | UniPath',
+  description: 'استعرض أكثر من 300 منحة دراسية حول العالم',
 }
 
 async function getScholarships() {
@@ -19,7 +19,7 @@ async function getScholarships() {
   }
 }
 
-export default async function HomePage() {
+export default async function ScholarshipsPage() {
   const scholarships = await getScholarships()
-  return <HomeClient scholarships={scholarships} />
+  return <ScholarshipsClient scholarship={scholarships} />
 }
