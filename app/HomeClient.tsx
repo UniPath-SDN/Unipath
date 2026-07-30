@@ -2,10 +2,12 @@
 // app/HomeClient.tsx
 
 import { useState, useEffect } from "react";
+import React from 'react'
 import Link from "next/link";
 import './home.css'
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import HeroSlider from "./components/HeroSlider";
 
 type Scholarship = {
   id: string;
@@ -39,17 +41,23 @@ export default function HomeClient({
 
   return (
     <>
-      
+
 
       {/* NAV */}
       <Navbar />
 
       {/* HERO */}
-      <section className="hero">
-        <div className="hero-grid"></div>
+      <section className="hero mt-12">
+
+        {/* ✅ شبكة الخلفية */}
+        <div className="hero-grid "></div>
+
+        <HeroSlider></HeroSlider>
+
+        {/* ✅ المحتوى */}
         <div className="hero-content">
           <div className="hero-badge">
-            موثوق من أكثر من 2,000 طالب حول العالم
+            موثوق من أكثر من 1,000 طالب حول العالم
           </div>
           <h1>
             طريقك نحو
@@ -79,6 +87,8 @@ export default function HomeClient({
             </a>
           </div>
         </div>
+
+        {/* ✅ البطاقات الجانبية */}
         <div className="hero-visual">
           <div style={{ position: "relative", width: "100%", maxWidth: 400 }}>
             <div className="hero-card-main">
@@ -98,13 +108,7 @@ export default function HomeClient({
             <div className="float-badge-hero b1">
               <div className="badge-icon green">✅</div>
               <div>
-                <div
-                  style={{
-                    fontSize: ".8rem",
-                    fontWeight: 800,
-                    color: "#1B3A5C",
-                  }}
-                >
+                <div style={{ fontSize: ".8rem", fontWeight: 800, color: "#1B3A5C" }}>
                   تم التحقق من الوثائق
                 </div>
                 <div style={{ fontSize: ".72rem", color: "#8fa3b8" }}>للتو</div>
@@ -113,13 +117,7 @@ export default function HomeClient({
             <div className="float-badge-hero b2">
               <div className="badge-icon blue">🎓</div>
               <div>
-                <div
-                  style={{
-                    fontSize: ".8rem",
-                    fontWeight: 800,
-                    color: "#1B3A5C",
-                  }}
-                >
+                <div style={{ fontSize: ".8rem", fontWeight: 800, color: "#1B3A5C" }}>
                   تم القبول!
                 </div>
                 <div style={{ fontSize: ".72rem", color: "#2FA889" }}>
@@ -134,10 +132,10 @@ export default function HomeClient({
       {/* STATS */}
       <section className="stats">
         {[
-          ["+", "2K", "طالب تم مساعدتهم\nحول العالم"],
-          ["+", "50", "دولة ووجهة\nدراسية"],
-          ["", "95%", "نسبة نجاح\nالطلبات"],
-          ["+", "300", "شراكات منح\nنشطة"],
+          ["+", "1K", "طالب تم مساعدتهم\nحول العالم"],
+          ["+", "37", "دولة ووجهة\nدراسية"],
+          ["", "65%", "نسبة نجاح\nالطلبات"],
+          ["+", "30", "شراكات منح\nنشطة"],
         ].map(([prefix, num, label], i) => (
           <div key={i} className="stat-item">
             <div className="stat-num">
@@ -174,125 +172,125 @@ export default function HomeClient({
         <div className="sch-grid">
           {shown.length > 0
             ? shown.map((s, i) => (
-                <a
-                  key={s.id}
-                  href={`/scholarships/${s.slug}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <div className="sch-card">
-                    <div className={`sch-img ${GRAD[i % GRAD.length]}`}>
-                      {s.country_flag}
-                      <div className="sch-badge open">مفتوح</div>
-                    </div>
-                    <div className="sch-body">
-                      <div className="sch-country">{s.country}</div>
-                      <div className="sch-name">{s.name_ar}</div>
-                      <div className="sch-tags">
-                        <span className="sch-tag">
-                          {s.funding_type === "FULL"
-                            ? "تمويل كامل"
-                            : s.funding_type === "PARTIAL"
-                            ? "تمويل جزئي"
-                            : "رسوم دراسية"}
-                        </span>
-                        {s.levels.slice(0, 2).map((l) => (
-                          <span key={l} className="sch-tag">
-                            {l === "MASTERS"
-                              ? "ماجستير"
-                              : l === "PHD"
-                              ? "دكتوراه"
-                              : l === "BACHELORS"
-                              ? "بكالوريوس"
-                              : l}
-                          </span>
-                        ))}
-                      </div>
-                      <div className="sch-foot">
-                        <span className="sch-dead">
-                          {s.deadline
-                            ? `الموعد: ${new Date(
-                                s.deadline,
-                              ).toLocaleDateString("ar-EG", {
-                                day: "numeric",
-                                month: "long",
-                              })}`
-                            : "—"}
-                        </span>
-                        <a href={`/scholarships/${s.slug}`}>قدّم الآن</a>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              ))
-            : // Placeholder cards when no data yet
-              [
-                {
-                  flag: "🇩🇪",
-                  country: "ألمانيا",
-                  name: "منحة DAAD للتبادل الأكاديمي الألماني",
-                  tags: ["تمويل كامل", "ماجستير", "دكتوراه"],
-                  dead: "31 مارس",
-                  g: "g1",
-                },
-                {
-                  flag: "🇬🇧",
-                  country: "المملكة المتحدة",
-                  name: "منحة Chevening الحكومية البريطانية",
-                  tags: ["تمويل كامل", "ماجستير", "قيادة"],
-                  dead: "15 أبريل",
-                  g: "g2",
-                },
-                {
-                  flag: "🇹🇷",
-                  country: "تركيا",
-                  name: "منحة تركيا بورصلاري الحكومية",
-                  tags: ["تمويل كامل", "بكالوريوس", "ماجستير"],
-                  dead: "20 مايو",
-                  g: "g3",
-                },
-                {
-                  flag: "🇨🇳",
-                  country: "الصين",
-                  name: "منحة الحكومة الصينية CSC",
-                  tags: ["تمويل كامل", "جميع المراحل"],
-                  dead: "1 يونيو",
-                  g: "g4",
-                },
-                {
-                  flag: "🇦🇺",
-                  country: "أستراليا",
-                  name: "منحة Australia Awards الدراسية",
-                  tags: ["تمويل كامل", "ماجستير", "دكتوراه"],
-                  dead: "30 يوليو",
-                  g: "g5",
-                },
-              ].map((s, i) => (
-                <div
-                  key={i}
-                  className="sch-card"
-                  onClick={() => (window.location.href = "/scholarships")}
-                >
-                  <div className={`sch-img ${s.g}`}>
-                    {s.flag}
+              <a
+                key={s.id}
+                href={`/scholarships/${s.slug}`}
+                style={{ textDecoration: "none" }}
+              >
+                <div className="sch-card">
+                  <div className={`sch-img ${GRAD[i % GRAD.length]}`}>
+                    {s.country_flag}
                     <div className="sch-badge open">مفتوح</div>
                   </div>
                   <div className="sch-body">
                     <div className="sch-country">{s.country}</div>
-                    <div className="sch-name">{s.name}</div>
+                    <div className="sch-name">{s.name_ar}</div>
                     <div className="sch-tags">
-                      {s.tags.map((t) => (
-                        <span key={t} className="sch-tag">
-                          {t}
+                      <span className="sch-tag">
+                        {s.funding_type === "FULL"
+                          ? "تمويل كامل"
+                          : s.funding_type === "PARTIAL"
+                            ? "تمويل جزئي"
+                            : "رسوم دراسية"}
+                      </span>
+                      {s.levels.slice(0, 2).map((l) => (
+                        <span key={l} className="sch-tag">
+                          {l === "MASTERS"
+                            ? "ماجستير"
+                            : l === "PHD"
+                              ? "دكتوراه"
+                              : l === "BACHELORS"
+                                ? "بكالوريوس"
+                                : l}
                         </span>
                       ))}
                     </div>
                     <div className="sch-foot">
-                      <span className="sch-dead">الموعد: {s.dead}</span>
-                      <a href="/scholarships">قدّم الآن</a>
+                      <span className="sch-dead">
+                        {s.deadline
+                          ? `الموعد: ${new Date(
+                            s.deadline,
+                          ).toLocaleDateString("ar-EG", {
+                            day: "numeric",
+                            month: "long",
+                          })}`
+                          : "—"}
+                      </span>
+                      <a href={`/scholarships/${s.slug}`}>قدّم الآن</a>
                     </div>
                   </div>
                 </div>
-              ))}
+              </a>
+            ))
+            : // Placeholder cards when no data yet
+            [
+              {
+                flag: "🇩🇪",
+                country: "ألمانيا",
+                name: "منحة DAAD للتبادل الأكاديمي الألماني",
+                tags: ["تمويل كامل", "ماجستير", "دكتوراه"],
+                dead: "31 مارس",
+                g: "g1",
+              },
+              {
+                flag: "🇬🇧",
+                country: "المملكة المتحدة",
+                name: "منحة Chevening الحكومية البريطانية",
+                tags: ["تمويل كامل", "ماجستير", "قيادة"],
+                dead: "15 أبريل",
+                g: "g2",
+              },
+              {
+                flag: "🇹🇷",
+                country: "تركيا",
+                name: "منحة تركيا بورصلاري الحكومية",
+                tags: ["تمويل كامل", "بكالوريوس", "ماجستير"],
+                dead: "20 مايو",
+                g: "g3",
+              },
+              {
+                flag: "🇨🇳",
+                country: "الصين",
+                name: "منحة الحكومة الصينية CSC",
+                tags: ["تمويل كامل", "جميع المراحل"],
+                dead: "1 يونيو",
+                g: "g4",
+              },
+              {
+                flag: "🇦🇺",
+                country: "أستراليا",
+                name: "منحة Australia Awards الدراسية",
+                tags: ["تمويل كامل", "ماجستير", "دكتوراه"],
+                dead: "30 يوليو",
+                g: "g5",
+              },
+            ].map((s, i) => (
+              <div
+                key={i}
+                className="sch-card"
+                onClick={() => (window.location.href = "/scholarships")}
+              >
+                <div className={`sch-img ${s.g}`}>
+                  {s.flag}
+                  <div className="sch-badge open">مفتوح</div>
+                </div>
+                <div className="sch-body">
+                  <div className="sch-country">{s.country}</div>
+                  <div className="sch-name">{s.name}</div>
+                  <div className="sch-tags">
+                    {s.tags.map((t) => (
+                      <span key={t} className="sch-tag">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="sch-foot">
+                    <span className="sch-dead">الموعد: {s.dead}</span>
+                    <a href="/scholarships">قدّم الآن</a>
+                  </div>
+                </div>
+              </div>
+            ))}
           <div
             className="sch-card"
             style={{

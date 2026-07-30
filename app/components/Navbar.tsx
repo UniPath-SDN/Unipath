@@ -16,7 +16,7 @@ export default function Navbar({ activePage = '' }: { activePage?: string }) {
 
 
       <nav>
-        <LogoIcon width={82} height={82} />
+        <LogoIcon width={62} height={62} />
 
         <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
           <li><Link href="/scholarships" className={activePage === 'scholarships' ? 'active' : ''}>المنح الدراسية</Link></li>
