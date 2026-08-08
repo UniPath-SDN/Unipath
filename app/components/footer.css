@@ -18,7 +18,30 @@
   display: flex; align-items: center; justify-content: center;
   text-decoration: none; font-size: 1rem; transition: background .2s;
 }
-.footer-social a:hover { background: rgba(47,168,137,.3); }
+/* في footer.css */
+.footer-social a {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+}
+
+.footer-social a:hover {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,0.16);
+}
+
+.footer-social a svg {
+  transition: fill 0.2s ease;
+}
+
+.footer-social a:hover svg {
+  fill: #3cc4a0;
+}
 .footer-col h4 { color: white; font-weight: 800; margin-bottom: 20px; font-size: .95rem; }
 .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
 .footer-col ul a { color: rgba(255,255,255,.55); text-decoration: none; font-size: .88rem; transition: color .2s; }

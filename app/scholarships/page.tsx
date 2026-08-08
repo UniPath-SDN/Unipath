@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import ScholarshipsClient from './[slug]/ScholarshipDetailClient'
+import ScholarshipsClient from './ScholarshipsClient'
 
 export const metadata: Metadata = {
   title: 'المنح الدراسية | UniPath',
@@ -21,5 +21,5 @@ async function getScholarships() {
 
 export default async function ScholarshipsPage() {
   const scholarships = await getScholarships()
-  return <ScholarshipsClient scholarship={scholarships} />
+  return <ScholarshipsClient scholarships={scholarships} />
 }

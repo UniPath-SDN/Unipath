@@ -1,3 +1,4 @@
+// app/scholarships/[slug]/page.tsx
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import ScholarshipDetailClient from './ScholarshipDetailClient'
@@ -17,6 +18,7 @@ async function getScholarship(slug: string) {
   }
 }
 
+// ✅ SEO: عنوان ووصف الصفحة
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const s = await getScholarship(params.slug)
   if (!s) return { title: 'منحة غير موجودة' }
@@ -26,8 +28,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+// ✅ الصفحة الرئيسية
 export default async function ScholarshipDetailPage({ params }: Props) {
   const scholarship = await getScholarship(params.slug)
+  
+  // ✅ أفضل طريقة لعرض 404
   if (!scholarship) notFound()
-  return <ScholarshipDetailClient scholarship={scholarship} />
+  
+  return <ScholarshipDetailClient scholarship ={scholarship} />
 }
