@@ -1,39 +1,40 @@
-// app/scholarships/[slug]/page.tsx
-import { notFound } from 'next/navigation'
-import type { Metadata } from 'next'
-import ScholarshipDetailClient from './ScholarshipDetailClient'
+  // app/scholarships/[slug]/page.tsx
+  import { notFound } from 'next/navigation'
+  import type { Metadata } from 'next'
+  import ScholarshipDetailClient from './ScholarshipDetailClient'
 
-type Props = { params: { slug: string } }
+  type Props = { params: { slug: string } }
 
-async function getScholarship(slug: string) {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/scholarships/${slug}/`,
-      { next: { revalidate: 3600 } }
-    )
-    if (!res.ok) return null
-    return res.json()
-  } catch {
-    return null
+  async function getScholarship(slug: string) {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/scholarships/${slug}/`,
+        { next: { revalidate: 3600 } }
+      )
+      if (!res.ok) return null
+      return res.json()
+    } catch {
+      return null
+    }
   }
-}
 
-// ✅ SEO: عنوان ووصف الصفحة
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const s = await getScholarship(params.slug)
-  if (!s) return { title: 'منحة غير موجودة' }
-  return {
-    title: `${s.name_ar} | UniPath`,
-    description: s.description_ar?.slice(0, 160),
+  // ✅ SEO: عنوان ووصف الصفحة
+  export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const s = await getScholarship(params.slug)
+    if (!s) return { title: 'منحة غير موجودة' }
+    return {
+      title: `${s.name_ar} | UniPath`,
+      description: s.description_ar?.slice(0, 160),
+    }
   }
-}
 
-// ✅ الصفحة الرئيسية
-export default async function ScholarshipDetailPage({ params }: Props) {
-  const scholarship = await getScholarship(params.slug)
+  // ✅ الصفحة الرئيسية
+  export default async function ScholarshipDetailPage({ params }: Props) {
+    const scholarship = await getScholarship(params.slug)
+    
+    // ✅ أفضل طريقة لعرض 404
+    if (!scholarship) notFound()
+    
   
-  // ✅ أفضل طريقة لعرض 404
-  if (!scholarship) notFound()
-  
-  return <ScholarshipDetailClient scholarship ={scholarship} />
-}
+ return <ScholarshipDetailClient scholarship={scholarship} />
+  }

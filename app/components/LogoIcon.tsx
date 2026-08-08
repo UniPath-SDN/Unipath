@@ -1,6 +1,6 @@
 // components/LogoIcon.tsx
 import Image from 'next/image'
-import logo from '/home/kira/alx/Unipath/unipath/public/logo.svg'
+import logo from '../../public/logo.svg'
 
 interface LogoIconProps {
   width?: number

@@ -21,5 +21,6 @@ async function getScholarships() {
 
 export default async function ScholarshipsPage() {
   const scholarships = await getScholarships()
+
   return <ScholarshipsClient scholarships={scholarships} />
 }
