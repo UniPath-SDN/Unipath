@@ -1,8 +1,18 @@
+/* app/globals.css */
+
+/* ✅ الخط الوحيد في الموقع — غيّره من هنا فقط */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  /* ✅ مكان واحد لتغيير الخط في الموقع كله */
+  :root {
+    --font-app: 'Cairo', system-ui, -apple-system, sans-serif;
+  }
+
   *,
   *::before,
   *::after {
@@ -10,11 +20,25 @@
     margin: 0;
     padding: 0;
   }
+
   html {
     scroll-behavior: smooth;
   }
+
+  html,
   body {
+    font-family: var(--font-app);
     direction: rtl;
+    color: #0f2236;
+    overflow-x: hidden;
+  }
+
+  /* ⚠️ مهم: اجعل كل العناصر ترث الخط */
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
   }
 
   @keyframes fadeUp {

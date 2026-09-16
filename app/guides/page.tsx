@@ -51,7 +51,7 @@ const GUIDES = [
 
 export default function GuidesPage() {
   return (
-    <div dir="rtl" style={{ fontFamily: 'Cairo, sans-serif', background: '#f4f7fb', minHeight: '100vh' }}>
+    <div dir="rtl" style={{background: '#f4f7fb', minHeight: '100vh' }}>
       <Navbar activePage="guides" />
 
       {/* HERO */}

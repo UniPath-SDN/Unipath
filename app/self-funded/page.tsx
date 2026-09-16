@@ -7,7 +7,7 @@ import SelfFundedAdmission from '../components/admission/SelfFundedAdmission'
 
 export default function SelfFundedPage() {
   return (
-    <div dir="rtl" style={{ fontFamily: 'Cairo, sans-serif', background: '#f4f7fb', minHeight: '100vh' }}>
+    <div dir="rtl" style={{background: '#f4f7fb', minHeight: '100vh' }}>
       <Navbar activePage="self-funded" />
       <div className="mt-16">
         <SelfFundedAdmission />

@@ -8,7 +8,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        cairo: ['var(--font-cairo)', 'Cairo', 'sans-serif'],
+        sans: ['var(--font-app)', 'Cairo', 'sans-serif'],
       },
     },
   },
