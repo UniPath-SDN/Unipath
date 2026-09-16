@@ -203,7 +203,7 @@ body {
   height: 100%;
   overflow: hidden;
   opacity: 1;
-  z-index: 1; 
+  z-index: 1;
 }
 
 /* ✅ حاوية الصور (بدون حركة أفقية) */
@@ -222,7 +222,7 @@ body {
   height: 100%;
   flex-shrink: 0;
   padding: 0;
-  opacity: 0; 
+  opacity: 0;
   transition: opacity 2s ease-in-out; /* تأثير تلاشي ناعم لمدة ثانيتين */
   pointer-events: none;
 }
@@ -248,9 +248,11 @@ body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image: 
-    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
@@ -259,11 +261,12 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 2; 
-  background: linear-gradient(135deg, 
-    rgba(18,40,69,0.85) 0%, 
-    rgba(27,58,92,0.7) 50%, 
-    rgba(26,92,66,0.8) 100%
+  z-index: 2;
+  background: linear-gradient(
+    135deg,
+    rgba(18, 40, 69, 0.85) 0%,
+    rgba(27, 58, 92, 0.7) 50%,
+    rgba(26, 92, 66, 0.8) 100%
   );
 }
 
@@ -288,7 +291,7 @@ body {
 /* ✅ المحتوى فوق الخلفية */
 .hero-content {
   position: relative;
-  z-index: 3; 
+  z-index: 3;
   animation: fadeUp 0.8s 0.2s ease both;
 }
 

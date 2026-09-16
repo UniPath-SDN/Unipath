@@ -39,12 +39,20 @@ type Scholarship = {
 }
 
 export default function ScholarshipsClient({ 
-  scholarships = []  // ← قيمة افتراضية
+  scholarships = [] 
 }: { 
   scholarships: Scholarship[] 
 }) {
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(false)
+
+  // ✅ حساب الإحصائيات
+  const totalScholarships = scholarships.length
+  const totalApplications = scholarships.reduce((sum, s) => sum + (s.applications || 0), 0)
+  const openScholarships = scholarships.filter(s => {
+    return !s.deadline || new Date(s.deadline) > new Date()
+  }).length
+  const countriesCount = new Set(scholarships.map(s => s.country)).size
 
   // ✅ فلترة المنح
   const filtered = scholarships.filter(s =>
@@ -54,17 +62,45 @@ export default function ScholarshipsClient({
   )
 
   return (
+    
     <div dir="rtl" style={{ fontFamily: 'Cairo, sans-serif', background: '#f4f7fb', minHeight: '100vh' }}>
       <Navbar activePage="scholarships" />
 
       {/* HERO */}
-      <div style={{ background: 'linear-gradient(135deg,#122845 0%,#1B3A5C 60%,#1a5c42 100%)', padding: '60px 5% 40px'}}  className='mt-20'>
+      <div  className='mt-20' style={{ background: 'linear-gradient(135deg,#122845 0%,#1B3A5C 60%,#1a5c42 100%)', padding: '60px 5% 40px' }}>
         <h1 style={{ fontSize: 'clamp(2rem,3vw,2.8rem)', fontWeight: 900, color: '#fff', marginBottom: 8 }}>
           استعرض المنح المتوفرة
         </h1>
         <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,.65)', maxWidth: 560 }}>
           اختر المنحة المناسبة لك واكتشف تفاصيلها الكاملة
         </p>
+      </div>
+
+      {/* ✅ STATS */}
+      <div style={{ 
+        maxWidth: 1100, 
+        margin: '0 auto', 
+        padding: '20px 5% 0',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+        gap: 12,
+      }}>
+        <div style={{ background: '#fff', borderRadius: 12, padding: '14px 16px', textAlign: 'center', border: '1px solid #e8eef5' }}>
+          <div style={{ fontSize: 24, fontWeight: 900, color: '#1B3A5C' }}>{totalScholarships}</div>
+          <div style={{ fontSize: 11, color: '#8fa3b8' }}>فرصة دراسية</div>
+        </div>
+        <div style={{ background: '#fff', borderRadius: 12, padding: '14px 16px', textAlign: 'center', border: '1px solid #e8eef5' }}>
+          <div style={{ fontSize: 24, fontWeight: 900, color: '#2FA889' }}>{openScholarships}</div>
+          <div style={{ fontSize: 11, color: '#8fa3b8' }}>مفتوحة الآن</div>
+        </div>
+        <div style={{ background: '#fff', borderRadius: 12, padding: '14px 16px', textAlign: 'center', border: '1px solid #e8eef5' }}>
+          <div style={{ fontSize: 24, fontWeight: 900, color: '#2196F3' }}>{countriesCount}</div>
+          <div style={{ fontSize: 11, color: '#8fa3b8' }}>دولة مختلفة</div>
+        </div>
+        <div style={{ background: '#fff', borderRadius: 12, padding: '14px 16px', textAlign: 'center', border: '1px solid #e8eef5' }}>
+          <div style={{ fontSize: 24, fontWeight: 900, color: '#FF9800' }}>{totalApplications}</div>
+          <div style={{ fontSize: 11, color: '#8fa3b8' }}>تقديم عبر UniPath</div>
+        </div>
       </div>
 
       {/* SEARCH */}

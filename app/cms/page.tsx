@@ -1,10 +1,15 @@
 'use client'
-// app/admin/cms/page.tsx  —  Scholarship CMS
-// يتواصل مع Django API مباشرة
+// app/cms/page.tsx  —  Scholarship CMS
+//
+// معدّلة عشان تتماشى مع نظام الـ auth:
+// - كل الطلبات بتستخدم authFetch (بتبعت الكوكيز + تجدد الـ token تلقائي لو خلص)
+// - لو الجلسة مش صالحة (401 حتى بعد محاولة التجديد) بترجع المستخدم لصفحة الدخول
+// - الـ endpoints بقت تحت /api/ زي باقي الـ API (/api/scholarships/ مش /scholarships/)
+// - الملف نقل من app/admin/cms/ لـ app/cms/ عشان يطابق المسار اللي middleware.ts بيحميه فعلاً
 
 import { useState, useEffect, useCallback } from 'react'
-
-const API = process.env.NEXT_PUBLIC_API_URL
+import { useRouter } from 'next/navigation'
+import { authFetch, logout } from '@/lib/auth'
 
 // ── Types
 type Scholarship = {
@@ -16,6 +21,7 @@ type Scholarship = {
   deadline?: string; views: number; applications: number
   description_ar: string; benefits_ar: string[]
   official_url?: string
+  image_url?: string
   conditions:  { order: number; title_ar: string; desc_ar?: string }[]
   documents:   { order: number; name_ar: string;  note_ar?: string; icon: string }[]
   timeline:    { order: number; date_label: string; title_ar: string; desc_ar?: string; is_past: boolean }[]
@@ -29,6 +35,7 @@ const EMPTY_FORM: FormData = {
   funding_type: 'FULL', levels: [], status: 'DRAFT',
   description_ar: '', benefits_ar: [''],
   official_url: '',
+  image_url: '',
   conditions: [{ order: 1, title_ar: '', desc_ar: '' }],
   documents:  [{ order: 1, name_ar: '', note_ar: '', icon: '📄' }],
   timeline:   [{ order: 1, date_label: '', title_ar: '', desc_ar: '', is_past: false }],
@@ -75,6 +82,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 // ── Main CMS Component
 export default function CMSPage() {
+  const router = useRouter()
+  const [me, setMe]                     = useState<{ name: string; role_display: string } | null>(null)
   const [scholarships, setScholarships] = useState<Scholarship[]>([])
   const [loading, setLoading]           = useState(true)
   const [modalOpen, setModalOpen]       = useState(false)
@@ -85,20 +94,46 @@ export default function CMSPage() {
   const [search, setSearch]             = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('ALL')
   const [activeTab, setActiveTab]       = useState<'basic' | 'content' | 'seo'>('basic')
+  const [toast, setToast]               = useState<{ message: string; type: 'success' | 'error' } | null>(null)
 
-  // ── Fetch scholarships (كل الحالات للـ CMS)
+  // ── Toast helper
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 3000)
+  }
+
+  // ── Who's logged in (نفس اللي بتستخدمه باقي الداشبوردات)
+  useEffect(() => {
+    authFetch('/api/auth/me/')
+      .then(res => (res.ok ? res.json() : Promise.reject()))
+      .then(data => setMe({ name: data.name, role_display: data.role_display }))
+      .catch(() => router.push('/admin-login'))
+  }, [router])
+
+  async function handleLogout() {
+    await logout()
+    router.push('/admin-login')
+  }
+
+  // ── Fetch scholarships
   const fetchAll = useCallback(async () => {
     setLoading(true)
     try {
-      const res = await fetch(`${API}/scholarships/`)
+      const res = await authFetch('/api/scholarships/')
+      if (res.status === 401) {
+        // الجلسة انتهت فعلاً حتى بعد محاولة التجديد التلقائي في authFetch
+        router.push('/admin-login')
+        return
+      }
+      if (!res.ok) throw new Error('Failed to fetch')
       const data = await res.json()
       setScholarships(data)
     } catch {
-      console.error('Failed to fetch')
+      showToast('فشل في تحميل المنح', 'error')
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [router])
 
   useEffect(() => { fetchAll() }, [fetchAll])
 
@@ -118,6 +153,7 @@ export default function CMSPage() {
       status: s.status, description_ar: s.description_ar,
       benefits_ar: s.benefits_ar.length ? s.benefits_ar : [''],
       official_url: s.official_url ?? '',
+      image_url: s.image_url ?? '',
       conditions: s.conditions.length ? s.conditions : [{ order: 1, title_ar: '', desc_ar: '' }],
       documents:  s.documents.length  ? s.documents  : [{ order: 1, name_ar: '', note_ar: '', icon: '📄' }],
       timeline:   s.timeline.length   ? s.timeline   : [{ order: 1, date_label: '', title_ar: '', desc_ar: '', is_past: false }],
@@ -129,10 +165,13 @@ export default function CMSPage() {
 
   // ── Save
   async function handleSave() {
-    if (!form.name_ar || !form.name_en || !form.country) return
+    if (!form.name_ar || !form.name_en || !form.country) {
+      showToast('الرجاء تعبئة الحقول المطلوبة (*)', 'error')
+      return
+    }
     setSaving(true)
     try {
-      const url    = editTarget ? `${API}/scholarships/${editTarget.slug}/` : `${API}/scholarships/`
+      const url    = editTarget ? `/api/scholarships/${editTarget.slug}/` : `/api/scholarships/`
       const method = editTarget ? 'PUT' : 'POST'
       const payload = {
         ...form,
@@ -141,12 +180,21 @@ export default function CMSPage() {
         documents:   form.documents.map((d, i)  => ({ ...d, order: i + 1 })).filter(d => d.name_ar.trim()),
         timeline:    form.timeline.map((t, i)   => ({ ...t, order: i + 1 })).filter(t => t.title_ar.trim()),
       }
-      const res = await fetch(url, {
+      const res = await authFetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-      if (res.ok) { setModalOpen(false); fetchAll() }
+      if (res.status === 401) { router.push('/login'); return }
+      if (res.ok) {
+        setModalOpen(false)
+        fetchAll()
+        showToast(editTarget ? '✅ تم تعديل المنحة' : '✅ تم إضافة المنحة', 'success')
+      } else {
+        throw new Error('Save failed')
+      }
+    } catch {
+      showToast('❌ فشل في الحفظ', 'error')
     } finally {
       setSaving(false)
     }
@@ -157,20 +205,38 @@ export default function CMSPage() {
     if (!deleteId) return
     const s = scholarships.find(x => x.id === deleteId)
     if (!s) return
-    await fetch(`${API}/scholarships/${s.slug}/`, { method: 'DELETE' })
-    setDeleteId(null)
-    fetchAll()
+    try {
+      const res = await authFetch(`/api/scholarships/${s.slug}/`, { method: 'DELETE' })
+      if (res.status === 401) { router.push('/login'); return }
+      if (res.ok) {
+        setDeleteId(null)
+        fetchAll()
+        showToast('✅ تم حذف المنحة', 'success')
+      } else {
+        throw new Error('Delete failed')
+      }
+    } catch {
+      showToast('❌ فشل في الحذف', 'error')
+    }
   }
 
-  // ── Toggle status shortcut
+  // ── Toggle status
   async function toggleStatus(s: Scholarship) {
     const next = s.status === 'PUBLISHED' ? 'DRAFT' : 'PUBLISHED'
-    await fetch(`${API}/scholarships/${s.slug}/`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...s, status: next }),
-    })
-    fetchAll()
+    try {
+      const res = await authFetch(`/api/scholarships/${s.slug}/`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...s, status: next }),
+      })
+      if (res.status === 401) { router.push('/admin-login'); return }
+      if (res.ok) {
+        fetchAll()
+        showToast(`✅ تم ${next === 'PUBLISHED' ? 'نشر' : 'إخفاء'} المنحة`, 'success')
+      }
+    } catch {
+      showToast('❌ فشل في تغيير الحالة', 'error')
+    }
   }
 
   // ── Filtered list
@@ -203,16 +269,41 @@ export default function CMSPage() {
   return (
     <div dir="rtl" style={{ fontFamily: 'Cairo, sans-serif', background: '#f4f7fb', minHeight: '100vh' }}>
 
+      {/* ── TOAST ── */}
+      {toast && (
+        <div style={{
+          position: 'fixed', bottom: 30, right: 30, zIndex: 9999,
+          padding: '14px 24px', borderRadius: 12,
+          background: toast.type === 'success' ? '#0a6640' : '#a32d2d',
+          color: '#fff', fontWeight: 700, fontSize: 14,
+          boxShadow: '0 8px 30px rgba(0,0,0,.2)',
+          animation: 'slideUp 0.3s ease',
+          fontFamily: 'Cairo, sans-serif',
+        }}>
+          {toast.message}
+        </div>
+      )}
+
       {/* ── HEADER ── */}
       <div style={{ background: '#122845', padding: '0 5%', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 50 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <a href="/admin" style={{ color: 'rgba(255,255,255,.5)', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>← Admin Hub</a>
+          <a href="/hub" style={{ color: 'rgba(255,255,255,.5)', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>← Admin Hub</a>
           <span style={{ color: 'rgba(255,255,255,.2)' }}>|</span>
           <span style={{ fontSize: 14, fontWeight: 900, color: '#fff' }}>🎓 Scholarship CMS</span>
         </div>
-        <button onClick={openAdd} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 20px', background: '#2FA889', color: '#fff', border: 'none', borderRadius: 9, fontSize: 13, fontWeight: 800, cursor: 'pointer', fontFamily: 'Cairo, sans-serif' }}>
-          + إضافة منحة
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          {me && (
+            <span style={{ fontSize: 11, color: 'rgba(255,255,255,.5)', fontWeight: 700 }}>
+              {me.name} — {me.role_display}
+            </span>
+          )}
+          <button onClick={openAdd} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 20px', background: '#2FA889', color: '#fff', border: 'none', borderRadius: 9, fontSize: 13, fontWeight: 800, cursor: 'pointer', fontFamily: 'Cairo, sans-serif' }}>
+            + إضافة منحة
+          </button>
+          <button onClick={handleLogout} style={{ background: 'none', border: '1px solid rgba(255,255,255,.2)', color: 'rgba(255,255,255,.6)', padding: '7px 14px', borderRadius: 9, fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'Cairo, sans-serif' }}>
+            خروج
+          </button>
+        </div>
       </div>
 
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '28px 5%' }}>
@@ -262,52 +353,72 @@ export default function CMSPage() {
               <div style={{ fontSize: 14, fontWeight: 700, color: '#8fa3b8' }}>لا توجد منح — أضف منحة جديدة</div>
             </div>
           ) : (
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ background: '#f8fafc', borderBottom: '1px solid #eef2f7' }}>
-                  {['المنحة', 'الدولة', 'الحالة', 'آخر موعد', 'مشاهدات', 'تقديمات', 'إجراءات'].map(h => (
-                    <th key={h} style={{ padding: '10px 16px', fontSize: 11, fontWeight: 800, color: '#8fa3b8', textAlign: 'right' }}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {visible.map((s, i) => {
-                  const st = STATUS_MAP[s.status]
-                  return (
-                    <tr key={s.id} style={{ borderBottom: i < visible.length - 1 ? '1px solid #f0f4f8' : 'none', transition: 'background .15s' }}
-                      onMouseEnter={e => (e.currentTarget as HTMLTableRowElement).style.background = '#fafcff'}
-                      onMouseLeave={e => (e.currentTarget as HTMLTableRowElement).style.background = ''}
-                    >
-                      <td style={{ padding: '12px 16px' }}>
-                        <div style={{ fontSize: 13, fontWeight: 800, color: '#1B3A5C' }}>{s.name_ar}</div>
-                        <div style={{ fontSize: 10, color: '#8fa3b8', fontFamily: 'monospace' }}>{s.slug}</div>
-                      </td>
-                      <td style={{ padding: '12px 16px', fontSize: 13, color: '#4a6580' }}>
-                        {s.country_flag} {s.country}
-                      </td>
-                      <td style={{ padding: '12px 16px' }}>
-                        <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 50, background: st.bg, color: st.color }}>{st.label}</span>
-                      </td>
-                      <td style={{ padding: '12px 16px', fontSize: 12, color: '#4a6580' }}>
-                        {s.deadline ? new Date(s.deadline).toLocaleDateString('ar-EG', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}
-                      </td>
-                      <td style={{ padding: '12px 16px', fontSize: 13, fontWeight: 700, color: '#1B3A5C', textAlign: 'center' }}>{s.views.toLocaleString()}</td>
-                      <td style={{ padding: '12px 16px', fontSize: 13, fontWeight: 700, color: '#2FA889', textAlign: 'center' }}>{s.applications}</td>
-                      <td style={{ padding: '12px 16px' }}>
-                        <div style={{ display: 'flex', gap: 6 }}>
-                          <button onClick={() => openEdit(s)} style={{ padding: '5px 12px', background: '#f0f4f8', border: 'none', borderRadius: 7, fontSize: 11, fontWeight: 700, cursor: 'pointer', color: '#1B3A5C', fontFamily: 'Cairo, sans-serif' }}>تعديل</button>
-                          <button onClick={() => toggleStatus(s)} style={{ padding: '5px 12px', background: s.status === 'PUBLISHED' ? '#fce8e8' : '#d4f5e5', border: 'none', borderRadius: 7, fontSize: 11, fontWeight: 700, cursor: 'pointer', color: s.status === 'PUBLISHED' ? '#a32d2d' : '#0a6640', fontFamily: 'Cairo, sans-serif' }}>
-                            {s.status === 'PUBLISHED' ? 'إخفاء' : 'نشر'}
-                          </button>
-                          <a href={`/scholarships/${s.slug}`} target="_blank" rel="noopener noreferrer" style={{ padding: '5px 12px', background: '#e6f7f3', border: 'none', borderRadius: 7, fontSize: 11, fontWeight: 700, cursor: 'pointer', color: '#0a6640', textDecoration: 'none' }}>↗</a>
-                          <button onClick={() => setDeleteId(s.id)} style={{ padding: '5px 12px', background: '#fce8e8', border: 'none', borderRadius: 7, fontSize: 11, fontWeight: 700, cursor: 'pointer', color: '#a32d2d', fontFamily: 'Cairo, sans-serif' }}>حذف</button>
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 700 }}>
+                <thead>
+                  <tr style={{ background: '#f8fafc', borderBottom: '1px solid #eef2f7' }}>
+                    <th style={{ padding: '10px 12px', fontSize: 11, fontWeight: 800, color: '#8fa3b8', textAlign: 'center' }}>الصورة</th>
+                    <th style={{ padding: '10px 12px', fontSize: 11, fontWeight: 800, color: '#8fa3b8', textAlign: 'right' }}>المنحة</th>
+                    <th style={{ padding: '10px 12px', fontSize: 11, fontWeight: 800, color: '#8fa3b8', textAlign: 'right' }}>الدولة</th>
+                    <th style={{ padding: '10px 12px', fontSize: 11, fontWeight: 800, color: '#8fa3b8', textAlign: 'center' }}>الحالة</th>
+                    <th style={{ padding: '10px 12px', fontSize: 11, fontWeight: 800, color: '#8fa3b8', textAlign: 'center' }}>آخر موعد</th>
+                    <th style={{ padding: '10px 12px', fontSize: 11, fontWeight: 800, color: '#8fa3b8', textAlign: 'center' }}>👁️</th>
+                    <th style={{ padding: '10px 12px', fontSize: 11, fontWeight: 800, color: '#8fa3b8', textAlign: 'center' }}>📋</th>
+                    <th style={{ padding: '10px 12px', fontSize: 11, fontWeight: 800, color: '#8fa3b8', textAlign: 'center' }}>إجراءات</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {visible.map((s, i) => {
+                    const st = STATUS_MAP[s.status]
+                    return (
+                      <tr key={s.id} style={{ borderBottom: i < visible.length - 1 ? '1px solid #f0f4f8' : 'none', transition: 'background .15s' }}
+                        onMouseEnter={e => (e.currentTarget as HTMLTableRowElement).style.background = '#fafcff'}
+                        onMouseLeave={e => (e.currentTarget as HTMLTableRowElement).style.background = ''}
+                      >
+                        <td style={{ padding: '10px 12px', textAlign: 'center' }}>
+                          {s.image_url ? (
+                            <img
+                              src={s.image_url}
+                              alt={s.name_ar}
+                              style={{ width: 45, height: 45, borderRadius: 8, objectFit: 'cover' }}
+                            />
+                          ) : (
+                            <div style={{ width: 45, height: 45, borderRadius: 8, background: '#f0f4f8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, margin: '0 auto' }}>
+                              {s.country_flag}
+                            </div>
+                          )}
+                        </td>
+                        <td style={{ padding: '10px 12px' }}>
+                          <div style={{ fontSize: 13, fontWeight: 800, color: '#1B3A5C' }}>{s.name_ar}</div>
+                          <div style={{ fontSize: 10, color: '#8fa3b8', fontFamily: 'monospace' }}>{s.slug}</div>
+                        </td>
+                        <td style={{ padding: '10px 12px', fontSize: 13, color: '#4a6580' }}>
+                          {s.country_flag} {s.country}
+                        </td>
+                        <td style={{ padding: '10px 12px', textAlign: 'center' }}>
+                          <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 50, background: st.bg, color: st.color }}>{st.label}</span>
+                        </td>
+                        <td style={{ padding: '10px 12px', fontSize: 12, color: '#4a6580', textAlign: 'center' }}>
+                          {s.deadline ? new Date(s.deadline).toLocaleDateString('ar-EG', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}
+                        </td>
+                        <td style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700, color: '#1B3A5C', textAlign: 'center' }}>{s.views.toLocaleString()}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700, color: '#2FA889', textAlign: 'center' }}>{s.applications}</td>
+                        <td style={{ padding: '10px 12px' }}>
+                          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                            <button onClick={() => openEdit(s)} style={{ padding: '4px 10px', background: '#f0f4f8', border: 'none', borderRadius: 6, fontSize: 10, fontWeight: 700, cursor: 'pointer', color: '#1B3A5C', fontFamily: 'Cairo, sans-serif' }}>تعديل</button>
+                            <button onClick={() => toggleStatus(s)} style={{ padding: '4px 10px', background: s.status === 'PUBLISHED' ? '#fce8e8' : '#d4f5e5', border: 'none', borderRadius: 6, fontSize: 10, fontWeight: 700, cursor: 'pointer', color: s.status === 'PUBLISHED' ? '#a32d2d' : '#0a6640', fontFamily: 'Cairo, sans-serif' }}>
+                              {s.status === 'PUBLISHED' ? 'إخفاء' : 'نشر'}
+                            </button>
+                            <a href={`/scholarships/${s.slug}`} target="_blank" rel="noopener noreferrer" style={{ padding: '4px 10px', background: '#e6f7f3', border: 'none', borderRadius: 6, fontSize: 10, fontWeight: 700, cursor: 'pointer', color: '#0a6640', textDecoration: 'none' }}>↗</a>
+                            <button onClick={() => setDeleteId(s.id)} style={{ padding: '4px 10px', background: '#fce8e8', border: 'none', borderRadius: 6, fontSize: 10, fontWeight: 700, cursor: 'pointer', color: '#a32d2d', fontFamily: 'Cairo, sans-serif' }}>حذف</button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>
@@ -395,6 +506,34 @@ export default function CMSPage() {
                   </div>
                 </Section>
 
+                <Section title="صورة المنحة 🖼️">
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, alignItems: 'start' }}>
+                    <div>
+                      <label style={lbl}>رابط الصورة</label>
+                      <input
+                        value={form.image_url ?? ''}
+                        onChange={e => setF('image_url', e.target.value)}
+                        placeholder="https://images.unsplash.com/photo-..."
+                        dir="ltr"
+                        style={inp}
+                      />
+                      <div style={{ fontSize: 10, color: '#8fa3b8', marginTop: 6 }}>
+                        💡 استخدم صور من Unsplash أو أي رابط صورة عام
+                      </div>
+                    </div>
+                    {form.image_url && (
+                      <div style={{ width: 80, height: 80, borderRadius: 8, overflow: 'hidden', flexShrink: 0, border: '1px solid #e8eef5' }}>
+                        <img
+                          src={form.image_url}
+                          alt="معاينة الصورة"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          onError={(e) => { (e.target as HTMLImageElement).src = '' }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </Section>
+
                 <Section title="روابط ومواعيد">
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
@@ -403,7 +542,7 @@ export default function CMSPage() {
                     </div>
                     <div>
                       <label style={lbl}>آخر موعد للتقديم</label>
-                      <input type="date" onChange={e => setF('deadline' as any, e.target.value)} style={inp} dir="ltr" />
+                      <input type="date" value={form.deadline ?? ''} onChange={e => setF('deadline' as any, e.target.value)} style={inp} dir="ltr" />
                     </div>
                   </div>
                 </Section>
@@ -530,6 +669,14 @@ export default function CMSPage() {
           </div>
         </div>
       )}
+
+      {/* ── STYLES ── */}
+      <style>{`
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
 
     </div>
   )

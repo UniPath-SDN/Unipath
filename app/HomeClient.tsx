@@ -2,15 +2,35 @@
 // app/HomeClient.tsx
 
 import { useState, useEffect } from "react";
-import React from 'react'
+import React from "react";
 import Link from "next/link";
-import './home.css'
+import "./home.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import HeroSlider from "./components/HeroSlider";
-import HeroVisual from './components/HeroVisual'
+import HeroVisual from "./components/HeroVisual";
 import Stats from "./components/Stats";
-import ScholarshipsSection from './components/ScholarshipsSection'
+import ScholarshipsSection from "./components/ScholarshipsSection";
+import SelfFundedAdmission from "./components/SelfFundedAdmission";
+
+import {
+  Sparkles,
+  GraduationCap,
+  FileText,
+  Handshake,
+  Mail,
+  Bell,
+  Lock,
+  CheckCircle,
+  Shield,
+  Library,
+  Clock,
+  Globe,
+  Target,
+  MessageCircle,
+  Plane,
+  BarChart3,
+} from "lucide-react";
 
 type Scholarship = {
   id: string;
@@ -44,14 +64,11 @@ export default function HomeClient({
 
   return (
     <>
-
-
       {/* NAV */}
       <Navbar />
 
       {/* HERO */}
       <section className="hero mt-12">
-
         {/* ✅ شبكة الخلفية */}
         <div className="hero-grid "></div>
 
@@ -92,17 +109,16 @@ export default function HomeClient({
         </div>
 
         {/* ✅ البطاقات الجانبية */}
-  <HeroVisual />
+        <HeroVisual />
 
-  {/* ====✅ البطاقات الجانبية ======*/}
+        {/* ====✅ البطاقات الجانبية ======*/}
       </section>
 
       {/* STATS */}
-      <Stats/>
+      <Stats />
 
       {/* SCHOLARSHIPS */}
-       <ScholarshipsSection />
-
+      <ScholarshipsSection />
       {/* SERVICES */}
       <section className="services" id="services">
         <div className="section-header">
@@ -115,41 +131,41 @@ export default function HomeClient({
         </div>
         <div className="srv-grid">
           {[
-            [
-              "📄",
-              "إعداد الوثائق",
-              "مساعدة احترافية في كتابة خطاب النية والسيرة الذاتية وخطابات التوصية وجميع وثائق التقديم.",
-            ],
-            [
-              "🎯",
-              "مطابقة المنح",
-              "نجد أفضل المنح المناسبة لملفك الأكاديمي وأهدافك باستخدام تقنيات ذكية.",
-            ],
-            [
-              "🌐",
-              "تقديم الطلبات",
-              "دعم متكامل للتقديم المباشر على بوابات المنح مع متابعة الحالة باستمرار.",
-            ],
-            [
-              "💬",
-              "تدريب المقابلات",
-              "جلسات تدريبية شخصية ومحاكاة للمقابلات لمساعدتك على الأداء بثقة.",
-            ],
-            [
-              "✈️",
-              "دعم ما قبل السفر",
-              "إرشادات التأشيرة، نصائح السكن، والتوجيه الثقافي للحياة في الخارج.",
-            ],
-            [
-              "📊",
-              "تتبع التقدم",
-              "تحديثات فورية على حالة طلبك عبر نظامنا وإشعارات واتساب المباشرة.",
-            ],
-          ].map(([icon, title, desc]) => (
-            <div key={title as string} className="srv-card">
-              <div className="srv-icon">{icon}</div>
-              <h3>{title as string}</h3>
-              <p>{desc as string}</p>
+            {
+              icon: <FileText size={28} color="#2FA889" />,
+              title: "إعداد الوثائق",
+              desc: "مساعدة احترافية في كتابة خطاب النية والسيرة الذاتية وخطابات التوصية وجميع وثائق التقديم.",
+            },
+            {
+              icon: <Target size={28} color="#2FA889" />,
+              title: "مطابقة المنح",
+              desc: "نجد أفضل المنح المناسبة لملفك الأكاديمي وأهدافك باستخدام تقنيات ذكية.",
+            },
+            {
+              icon: <Globe size={28} color="#2FA889" />,
+              title: "تقديم الطلبات",
+              desc: "دعم متكامل للتقديم المباشر على بوابات المنح مع متابعة الحالة باستمرار.",
+            },
+            {
+              icon: <MessageCircle size={28} color="#2FA889" />,
+              title: "تدريب المقابلات",
+              desc: "جلسات تدريبية شخصية ومحاكاة للمقابلات لمساعدتك على الأداء بثقة.",
+            },
+            {
+              icon: <Plane size={28} color="#2FA889" />,
+              title: "دعم ما قبل السفر",
+              desc: "إرشادات التأشيرة، نصائح السكن، والتوجيه الثقافي للحياة في الخارج.",
+            },
+            {
+              icon: <BarChart3 size={28} color="#2FA889" />,
+              title: "تتبع التقدم",
+              desc: "تحديثات فورية على حالة طلبك عبر نظامنا وإشعارات واتساب المباشرة.",
+            },
+          ].map((service) => (
+            <div key={service.title} className="srv-card">
+              <div className="srv-icon">{service.icon}</div>
+              <h3>{service.title}</h3>
+              <p>{service.desc}</p>
             </div>
           ))}
         </div>
@@ -248,7 +264,12 @@ export default function HomeClient({
               className="section-eyebrow"
               style={{ color: "var(--teal-light)" }}
             >
-              ✨ قريباً — خدمة جديدة
+              <Sparkles
+                size={16}
+                color="#3cc4a0"
+                style={{ display: "inline", marginLeft: 6 }}
+              />
+              قريباً — خدمة جديدة
             </span>
             <h2>القبول الجامعي الخاص</h2>
             <p>
@@ -257,30 +278,39 @@ export default function HomeClient({
             </p>
             <div className="admission-features">
               {[
-                [
-                  "🎓",
-                  "جامعات شريكة معتمدة",
-                  "رواندا · روسيا · وجهات أخرى قيد الإضافة",
-                ],
-                [
-                  "📋",
-                  "تجهيز ملف القبول كاملاً",
-                  "SOP · CV · خطابات توصية · ترجمة وثائق",
-                ],
-                ["🤝", "متابعة حتى السفر", "تقديم + تأشيرة + تجهيز للمقابلة"],
-              ].map(([icon, title, sub]) => (
-                <div key={title as string} className="admission-feat">
-                  <span className="feat-icon">{icon}</span>
+                {
+                  icon: <GraduationCap size={22} color="#2FA889" />,
+                  title: "جامعات شريكة معتمدة",
+                  sub: "رواندا · روسيا · وجهات أخرى قيد الإضافة",
+                },
+                {
+                  icon: <FileText size={22} color="#2FA889" />,
+                  title: "تجهيز ملف القبول كاملاً",
+                  sub: "SOP · CV · خطابات توصية · ترجمة وثائق",
+                },
+                {
+                  icon: <Handshake size={22} color="#2FA889" />,
+                  title: "متابعة حتى السفر",
+                  sub: "تقديم + تأشيرة + تجهيز للمقابلة",
+                },
+              ].map((item) => (
+                <div key={item.title} className="admission-feat">
+                  <span className="feat-icon">{item.icon}</span>
                   <div>
-                    <strong>{title as string}</strong>
-                    <span>{sub as string}</span>
+                    <strong>{item.title}</strong>
+                    <span>{item.sub}</span>
                   </div>
                 </div>
               ))}
             </div>
             <div className="waitlist-box">
               <div className="waitlist-label">
-                📩 سجّل اهتمامك — سنتواصل معك عند الإطلاق
+                <Mail
+                  size={18}
+                  color="#0a5540"
+                  style={{ display: "inline", marginLeft: 6 }}
+                />
+                سجّل اهتمامك — سنتواصل معك عند الإطلاق
               </div>
               <div className="waitlist-form">
                 <input
@@ -294,20 +324,61 @@ export default function HomeClient({
                   className="waitlist-input"
                   dir="ltr"
                 />
-                <button className="waitlist-btn">أبلغني عند الإطلاق 🔔</button>
+                <button className="waitlist-btn">
+                  أبلغني عند الإطلاق
+                  <Bell
+                    size={16}
+                    style={{ display: "inline", marginRight: 6 }}
+                  />
+                </button>
               </div>
               <div className="waitlist-note">
-                🔒 بياناتك آمنة · لن نشاركها مع أي جهة
+                <Lock
+                  size={14}
+                  color="#8fa3b8"
+                  style={{ display: "inline", marginRight: 4 }}
+                />
+                بياناتك آمنة · لن نشاركها مع أي جهة
               </div>
             </div>
           </div>
           <div className="admission-visual">
-            <div className="float-badge-adm badge-1-adm">✅ قبول معتمد</div>
-            <div className="float-badge-adm badge-2-adm">🛂 دعم تأشيرة</div>
-            <div className="float-badge-adm badge-3-adm">📚 جامعات معتمدة</div>
+            <div className="float-badge-adm badge-1-adm">
+              <CheckCircle
+                size={16}
+                color="#2FA889"
+                style={{ display: "inline", marginLeft: 4 }}
+              />
+              قبول معتمد
+            </div>
+            <div className="float-badge-adm badge-2-adm">
+              <Shield
+                size={16}
+                color="#2196F3"
+                style={{ display: "inline", marginLeft: 4 }}
+              />
+              دعم تأشيرة
+            </div>
+            <div className="float-badge-adm badge-3-adm">
+              <Library
+                size={16}
+                color="#FF9800"
+                style={{ display: "inline", marginLeft: 4 }}
+              />
+              جامعات معتمدة
+            </div>
             <div className="admission-card">
-              <div className="card-badge-adm">قريباً</div>
-              <div className="card-globe">🌍</div>
+              <div className="card-badge-adm">
+                <Clock
+                  size={14}
+                  color="#fff"
+                  style={{ display: "inline", marginLeft: 4 }}
+                />
+                قريباً
+              </div>
+              <div className="card-globe">
+                <Globe size={40} color="#2FA889" />
+              </div>
               <div className="card-title-adm">القبول الخاص</div>
               <div className="card-subtitle-adm">Self-Funded Admission</div>
               <div className="card-divider"></div>
@@ -357,6 +428,8 @@ export default function HomeClient({
           </div>
         </div>
       </section>
+      {/* ✅ الدراسة على النفقة الخاصة */}
+      <SelfFundedAdmission />
 
       {/* CTA */}
       <section className="cta-section">

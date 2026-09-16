@@ -1,0 +1,351 @@
+/* app/components/admission/self-funded.css */
+.admission-section {
+  padding: 80px 5%;
+  background: #f4f7fb;
+}
+.admission-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.section-eyebrow {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #2fa889;
+  margin-bottom: 12px;
+}
+.section-header h2 {
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  font-weight: 900;
+  color: #1b3a5c;
+  margin-bottom: 12px;
+}
+.section-header p {
+  color: #4a6580;
+  font-size: 1rem;
+  line-height: 1.9;
+  max-width: 560px;
+  margin: 0 auto;
+}
+.admission-guarantee-notice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #e8f5e9;
+  border: 1.5px solid #4caf50;
+  border-radius: 14px;
+  padding: 14px 24px;
+  margin-bottom: 24px;
+}
+.admission-guarantee-notice strong {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #1b5e20;
+  display: block;
+}
+.admission-guarantee-notice span {
+  font-size: 0.85rem;
+  color: #2e7d32;
+  line-height: 1.6;
+}
+.admission-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px 32px;
+  margin-bottom: 8px;
+  border: 1px solid #e8eef5;
+  flex-wrap: wrap;
+}
+.stat-item {
+  text-align: center;
+}
+.stat-number {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #2fa889;
+}
+.stat-label {
+  font-size: 0.8rem;
+  color: #8fa3b8;
+  font-weight: 600;
+}
+.stat-divider {
+  width: 1px;
+  height: 30px;
+  background: #e8eef5;
+}
+.admission-stats-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: #8fa3b8;
+  margin-bottom: 32px;
+}
+.admission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.admission-card-link {
+  text-decoration: none;
+}
+.admission-card {
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #e8eef5;
+  overflow: hidden;
+  transition: all 0.3s;
+  height: 100%;
+  cursor: pointer;
+}
+.admission-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(27, 58, 92, 0.12);
+  border-color: #2fa889;
+}
+.admission-card-image {
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.admission-card-flag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 28px;
+}
+.admission-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+}
+.admission-card-count {
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.admission-card-body {
+  padding: 16px 20px 20px;
+}
+.admission-card-body h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1b3a5c;
+  margin-bottom: 4px;
+}
+.admission-card-desc {
+  font-size: 0.85rem;
+  color: #4a6580;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+.admission-card-features {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+.admission-card-feature {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #4a6580;
+}
+.admission-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f4f8;
+}
+.admission-card-universities {
+  font-size: 0.75rem;
+  color: #8fa3b8;
+  line-height: 1.6;
+}
+.admission-card-cta {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #2fa889;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.admission-view-all {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.admission-view-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 28px;
+  border: 2px solid #2fa889;
+  border-radius: 50px;
+  color: #2fa889;
+  font-weight: 700;
+  background: #fff;
+  cursor: pointer;
+  font-family: "Cairo", sans-serif;
+  transition: all 0.3s;
+}
+.admission-view-all-btn:hover {
+  background: #2fa889;
+  color: #fff;
+}
+.admission-view-all-btn .rotated {
+  transform: rotate(180deg);
+}
+.admission-services {
+  background: #fff;
+  border-radius: 18px;
+  padding: 28px 32px;
+  border: 1px solid #e8eef5;
+  margin-bottom: 32px;
+}
+.admission-services h3 {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #1b3a5c;
+  margin-bottom: 16px;
+}
+.admission-services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.admission-service {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #f8fafc;
+  transition: all 0.3s;
+}
+.admission-service:hover {
+  background: #e6f7f3;
+}
+.admission-service-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.admission-service-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #1b3a5c;
+}
+.admission-service-desc {
+  font-size: 0.8rem;
+  color: #8fa3b8;
+  line-height: 1.6;
+}
+.admission-cta {
+  background: linear-gradient(135deg, #122845, #1b3a5c, #1a5c42);
+  border-radius: 20px;
+  padding: 24px 32px;
+}
+.admission-cta-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.admission-cta-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(47, 168, 137, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.admission-cta-content h3 {
+  font-size: 1rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 0;
+}
+.admission-cta-content p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+.admission-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #25d366;
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.3s;
+  flex-shrink: 0;
+  font-family: "Cairo", sans-serif;
+}
+.admission-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+}
+@media (max-width: 768px) {
+  .admission-grid {
+    grid-template-columns: 1fr;
+  }
+  .admission-cta-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+  .admission-cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .admission-stats {
+    gap: 12px;
+    padding: 16px 20px;
+  }
+  .stat-divider {
+    display: none;
+  }
+  .admission-services {
+    padding: 20px;
+  }
+  .admission-services-grid {
+    grid-template-columns: 1fr;
+  }
+  .admission-guarantee-notice {
+    flex-direction: column;
+    text-align: center;
+    padding: 14px 16px;
+  }
+}
+@media (max-width: 480px) {
+  .admission-stats {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

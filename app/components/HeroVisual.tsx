@@ -2,6 +2,7 @@
 // app/components/HeroVisual.tsx
 
 import { useState, useEffect } from 'react'
+import { CheckCircle, GraduationCap } from 'lucide-react'
 
 // ✅ بيانات وهمية للمنح الحالية
 const MOCK_SCHOLARSHIPS = [
@@ -35,17 +36,19 @@ const MOCK_SCHOLARSHIPS = [
 ]
 
 // ✅ بيانات وهمية للإشعارات العائمة
+
+
 const MOCK_NOTIFICATIONS = [
   {
     id: 1,
-    icon: '✅',
+    icon: <CheckCircle size={16} color="#2FA889" />,
     title: 'تم التحقق من الوثائق',
     time: 'للتو',
     type: 'green',
   },
   {
     id: 2,
-    icon: '🎓',
+    icon: <GraduationCap size={16} color="#2196F3" />,
     title: 'تم القبول!',
     name: 'أحمد · Chevening UK',
     type: 'blue',
@@ -72,7 +75,7 @@ export default function HeroVisual() {
   return (
     <div className="hero-visual">
       <div style={{ position: "relative", width: "100%", maxWidth: 400 }}>
-        
+
         {/* ✅ البطاقة الرئيسية */}
         <div className="hero-card-main">
           <div className="card-label">الطلب الحالي</div>
@@ -93,7 +96,7 @@ export default function HeroVisual() {
 
         {/* ✅ الإشعارات العائمة */}
         {notifications.map((notif, index) => (
-          <div 
+          <div
             key={notif.id}
             className={`float-badge-hero b${index + 1}`}
             style={{ animationDelay: `${index * 2}s` }}
@@ -111,7 +114,7 @@ export default function HeroVisual() {
             </div>
           </div>
         ))}
-        
+
       </div>
     </div>
   )

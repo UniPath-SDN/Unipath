@@ -45,6 +45,7 @@ type Scholarship = {
   deadline?: string
   views: number
   applications: number
+  image_url?: string // ✅ حقل الصورة
 }
 
 const FUND_LABEL: Record<string, string> = {
@@ -52,50 +53,6 @@ const FUND_LABEL: Record<string, string> = {
 }
 const LVL_LABEL: Record<string, string> = {
   BACHELORS: 'بكالوريوس', MASTERS: 'ماجستير', PHD: 'دكتوراه', POSTDOC: 'ما بعد الدكتوراه',
-}
-
-// ✅ بيانات وهمية
-const MOCK_SCHOLARSHIP: Scholarship = {
-  id: '1',
-  slug: 'daad-germany-2026',
-  name_ar: 'منحة DAAD الألمانية 2026',
-  name_en: 'DAAD Germany Scholarship 2026',
-  country: 'ألمانيا',
-  country_flag: '🇩🇪',
-  funding_type: 'FULL',
-  levels: ['BACHELORS', 'MASTERS', 'PHD'],
-  status: 'PUBLISHED',
-  description_ar: 'منحة DAAD هي واحدة من أشهر المنح الدراسية في العالم، تقدمها الحكومة الألمانية للطلاب الدوليين من جميع التخصصات. تغطي المنحة جميع تكاليف الدراسة والمعيشة في ألمانيا لمدة تصل إلى 4 سنوات.',
-  benefits_ar: [
-    'تغطية كاملة للرسوم الدراسية',
-    'بدل معيشة شهري 934 يورو',
-    'تأمين صحي شامل',
-    'تذاكر سفر سنوية',
-    'دورات لغة ألمانية مجانية',
-  ],
-  conditions: [
-    { id: 'c1', order: 1, title_ar: 'الحصول على شهادة البكالوريوس بمعدل لا يقل عن جيد جداً', desc_ar: 'تقدير 3.0 أو أعلى حسب النظام الألماني' },
-    { id: 'c2', order: 2, title_ar: 'إجادة اللغة الإنجليزية (IELTS 6.5 أو TOEFL 90)', desc_ar: 'أو إجادة اللغة الألمانية بمستوى B2' },
-    { id: 'c3', order: 3, title_ar: 'خبرة عملية لا تقل عن سنتين في مجال التخصص', desc_ar: 'يفضل خبرة في مجال البحث العلمي' },
-    { id: 'c4', order: 4, title_ar: 'خطابي توصية من أساتذة جامعيين', desc_ar: 'يفضل من أساتذة في نفس التخصص' },
-  ],
-  documents: [
-    { id: 'd1', order: 1, name_ar: 'السيرة الذاتية (CV)', note_ar: 'بصيغة Europass', icon: '📄' },
-    { id: 'd2', order: 2, name_ar: 'خطاب النية (SOP)', note_ar: 'حد أقصى 1000 كلمة', icon: '📝' },
-    { id: 'd3', order: 3, name_ar: 'خطابي توصية', note_ar: 'من أساتذة أو مشرفين', icon: '📋' },
-    { id: 'd4', order: 4, name_ar: 'شهادة اللغة', note_ar: 'IELTS أو TOEFL', icon: '🌐' },
-    { id: 'd5', order: 5, name_ar: 'كشف الدرجات', note_ar: 'مترجم ومعتمد', icon: '📊' },
-  ],
-  timeline: [
-    { id: 't1', order: 1, date_label: '1 يناير 2026', title_ar: 'بدء التقديم', desc_ar: 'فتح باب التقديم للمنحة', is_past: false },
-    { id: 't2', order: 2, date_label: '31 مارس 2026', title_ar: 'آخر موعد للتقديم', desc_ar: 'يجب إرسال الملفات كاملة', is_past: false },
-    { id: 't3', order: 3, date_label: '15 مايو 2026', title_ar: 'إعلان المقابلات', desc_ar: 'سيتم إرسال الدعوات للمقابلة', is_past: false },
-    { id: 't4', order: 4, date_label: '1 يوليو 2026', title_ar: 'إعلان النتائج النهائية', desc_ar: 'سيتم إرسال القبول للطلاب المختارين', is_past: false },
-  ],
-  official_url: 'https://www.daad.de/en/',
-  deadline: '2026-03-31',
-  views: 1247,
-  applications: 89,
 }
 
 function daysLeft(d?: string) {
@@ -151,9 +108,11 @@ function lblStyle(): React.CSSProperties {
 
 type FormState = 'idle' | 'loading' | 'success' | 'error'
 
-export default function ScholarshipDetailClient() {
-  const s = MOCK_SCHOLARSHIP  // ← استخدم البيانات الوهمية
-
+export default function ScholarshipDetailClient({
+  scholarship: s
+}: {
+  scholarship: Scholarship
+}) {
   const [formOpen, setFormOpen] = useState(false)
   const [formState, setFormState] = useState<FormState>('idle')
   const [errors, setErrors] = useState<string[]>([])
@@ -174,7 +133,6 @@ export default function ScholarshipDetailClient() {
     setErrors([])
     setFormState('loading')
     try {
-      // محاكاة طلب API
       await new Promise(resolve => setTimeout(resolve, 1500))
       setFormState('success')
       const msg = encodeURIComponent(
@@ -204,57 +162,273 @@ export default function ScholarshipDetailClient() {
 
   return (
     <div dir="rtl" style={{ fontFamily: 'Cairo, sans-serif', background: '#f4f7fb', minHeight: '100vh' }}>
+
+      {/* ✅ RESPONSIVE STYLES */}
+      <style>{`
+        /* Navbar */
+        .detail-nav {
+          background: white;
+          padding: 0 5%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 60px;
+          position: sticky;
+          top: 0;
+          z-index: 100;
+          border-bottom: 1px solid #e8eef5;
+          flex-wrap: wrap;
+        }
+        .detail-nav-links {
+          display: flex;
+          gap: 24px;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+        }
+        .detail-nav-links a {
+          color: #4a6580;
+          font-size: 13px;
+          font-weight: 600;
+          text-decoration: none;
+          white-space: nowrap;
+        }
+
+        /* Breadcrumb */
+        .detail-breadcrumb {
+          background: #fff;
+          border-bottom: 1px solid #dde5f0;
+          padding: 11px 5%;
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          font-size: 12px;
+          color: #8fa3b8;
+          flex-wrap: wrap;
+        }
+        .detail-breadcrumb a {
+          color: #8fa3b8;
+          text-decoration: none;
+        }
+        .detail-breadcrumb .current {
+          color: #0f2236;
+          font-weight: 700;
+        }
+
+        /* Hero */
+        .detail-hero {
+          background: linear-gradient(135deg,#122845 0%,#1B3A5C 60%,#1a5c42 100%);
+          padding: 44px 5% 0;
+          overflow: hidden;
+        }
+        .detail-hero-inner {
+          max-width: 1100px;
+          margin: 0 auto;
+        }
+        .detail-hero-top {
+          display: flex;
+          align-items: flex-start;
+          gap: 20px;
+          margin-bottom: 24px;
+        }
+        .detail-hero-flag {
+          width: 72px;
+          height: 72px;
+          border-radius: 18px;
+          background: rgba(255,255,255,.08);
+          border: 1px solid rgba(255,255,255,.12);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 38px;
+          flex-shrink: 0;
+        }
+        .detail-hero-image {
+          width: clamp(80px, 10vw, 120px);
+          height: clamp(80px, 10vw, 120px);
+          border-radius: 18px;
+          overflow: hidden;
+          flex-shrink: 0;
+          border: 2px solid rgba(255,255,255,.15);
+          box-shadow: 0 8px 32px rgba(0,0,0,.2);
+        }
+        .detail-hero-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .detail-hero-content { flex: 1; }
+        .detail-hero-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 7px;
+        }
+        .detail-hero-tags span {
+          font-size: 11px;
+          font-weight: 700;
+          padding: 4px 12px;
+          border-radius: 50px;
+        }
+
+        /* Stats Bar */
+        .detail-stats {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          border-top: 1px solid rgba(255,255,255,.08);
+          margin: 0 -5%;
+          padding: 0 5%;
+        }
+        .detail-stats-item {
+          padding: 16px 0;
+          text-align: center;
+          border-left: 1px solid rgba(255,255,255,.07);
+        }
+        .detail-stats-item:last-child { border-left: none; }
+        .detail-stats-num {
+          font-size: 18px;
+          font-weight: 900;
+          color: #fff;
+        }
+        .detail-stats-label {
+          font-size: 10px;
+          color: rgba(255,255,255,.35);
+          margin-top: 3px;
+          font-weight: 600;
+        }
+
+        /* Main Grid */
+        .detail-grid {
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 28px 5%;
+          display: grid;
+          grid-template-columns: 1fr 340px;
+          gap: 22px;
+          align-items: start;
+        }
+
+        /* Sidebar CTA */
+        .detail-cta {
+          background: linear-gradient(145deg,#122845,#2a4f78);
+          border-radius: 18px;
+          padding: 22px;
+          margin-bottom: 18px;
+          border: 1px solid rgba(255,255,255,.06);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+          .detail-grid { grid-template-columns: 1fr 300px; gap: 18px; }
+          .detail-hero-image {
+            width: clamp(70px, 8vw, 90px);
+            height: clamp(70px, 8vw, 90px);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .detail-nav { height: auto; padding: 10px 5%; gap: 10px; }
+          .detail-nav-links { gap: 12px; width: 100%; justify-content: center; }
+          .detail-nav-links a { font-size: 12px; }
+          
+          .detail-hero-top { flex-direction: column; align-items: center; text-align: center; }
+          .detail-hero-flag { width: 60px; height: 60px; font-size: 30px; }
+          .detail-hero-image {
+            width: clamp(60px, 8vw, 80px);
+            height: clamp(60px, 8vw, 80px);
+          }
+          .detail-hero-content { text-align: center; }
+          .detail-hero-tags { justify-content: center; }
+          
+          .detail-stats { grid-template-columns: repeat(2, 1fr); }
+          .detail-stats-item:nth-child(2) { border-left: none; }
+          .detail-stats-item:nth-child(3) { border-top: 1px solid rgba(255,255,255,.08); }
+          .detail-stats-item:nth-child(4) { border-top: 1px solid rgba(255,255,255,.08); border-left: none; }
+          
+          .detail-grid { grid-template-columns: 1fr; padding: 20px 5%; }
+        }
+
+        @media (max-width: 480px) {
+          .detail-hero { padding: 30px 5% 0; }
+          .detail-hero-flag { width: 48px; height: 48px; font-size: 24px; }
+          .detail-hero-image {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+          }
+          .detail-hero-content h1 { font-size: 18px !important; }
+          .detail-hero-tags span { font-size: 10px; padding: 3px 10px; }
+          .detail-stats-num { font-size: 15px; }
+          .detail-stats-label { font-size: 9px; }
+          .detail-breadcrumb { font-size: 11px; padding: 8px 5%; }
+          .detail-cta { padding: 16px; }
+          .detail-grid { padding: 16px 5%; }
+        }
+      `}</style>
+
       {/* NAV */}
-      <nav style={{ background: 'white', padding: '0 5%', display: 'flex', alignItems: 'center', height: 60, position: 'sticky', top: 0, zIndex: 100, borderBottom: '1px solid rgba(255,255,255,.06)' }}>
+      <nav className="detail-nav">
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-          <LogoIcon width={62} height={62} />
+          <LogoIcon width={50} height={50} />
         </Link>
-        <div style={{ display: 'flex', gap: 24, marginRight: 'auto' }}>
+        <div className="detail-nav-links">
           {[['المنح', '/scholarships'], ['خدماتنا', '/services'], ['الأسئلة الشائعة', '/faq'], ['تواصل', '/contact']].map(([label, href]) => (
-            <Link key={href} href={href} style={{ color: '#1B3A5C', fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>{label}</Link>
+            <Link key={href} href={href}>{label}</Link>
           ))}
         </div>
       </nav>
 
       {/* BREADCRUMB */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #dde5f0', padding: '11px 5%', display: 'flex', alignItems: 'center', gap: 7, fontSize: 12, color: '#8fa3b8' }}>
-        <Link href="/" style={{ color: '#8fa3b8', textDecoration: 'none' }}>الرئيسية</Link>
+      <div className="detail-breadcrumb">
+        <Link href="/">الرئيسية</Link>
         <span>›</span>
-        <Link href="/scholarships" style={{ color: '#8fa3b8', textDecoration: 'none' }}>المنح الدراسية</Link>
+        <Link href="/scholarships">المنح الدراسية</Link>
         <span>›</span>
-        <span style={{ color: '#0f2236', fontWeight: 700 }}>{s.name_ar}</span>
+        <span className="current">{s.name_ar}</span>
       </div>
 
       {/* HERO */}
-      <div style={{ background: 'linear-gradient(135deg,#122845 0%,#1B3A5C 60%,#1a5c42 100%)', padding: '44px 5% 0', overflow: 'hidden' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 20, marginBottom: 24 }}>
-            <div style={{ width: 72, height: 72, borderRadius: 18, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 38, flexShrink: 0 }}>
-              {s.country_flag}
-            </div>
-            <div style={{ flex: 1 }}>
+      <div className="detail-hero">
+        <div className="detail-hero-inner">
+          <div className="detail-hero-top">
+            
+            {/* ✅ صورة المنحة (إذا وجدت) أو العلم */}
+            {s.image_url ? (
+              <div className="detail-hero-image">
+                <img 
+                  src={s.image_url} 
+                  alt={s.name_ar}
+                />
+              </div>
+            ) : (
+              <div className="detail-hero-flag">{s.country_flag}</div>
+            )}
+            
+            <div className="detail-hero-content">
               <div style={{ fontSize: 11, fontWeight: 800, color: '#3cc4a0', letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 8 }}>
                 {s.country} · {FUND_LABEL[s.funding_type]} · {safeLevels.map(l => LVL_LABEL[l]).join(' و') || 'غير محدد'}
               </div>
-              <h1 style={{ fontSize: 'clamp(20px,3vw,28px)', fontWeight: 900, color: '#fff', lineHeight: 1.35, marginBottom: 6 }}>{s.name_ar}</h1>
-              <div style={{ fontSize: 13, color: 'rgba(255,255,255,.4)', fontFamily: 'monospace', marginBottom: 14 }}>{s.name_en}</div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
+              <h1 style={{ fontSize: 'clamp(18px, 3vw, 28px)', fontWeight: 900, color: '#fff', lineHeight: 1.35, marginBottom: 6 }}>
+                {s.name_ar}
+              </h1>
+              <div style={{ fontSize: 'clamp(11px, 1.2vw, 13px)', color: 'rgba(255,255,255,.4)', fontFamily: 'monospace', marginBottom: 14 }}>
+                {s.name_en}
+              </div>
+              <div className="detail-hero-tags">
                 {days !== null && days > 0 && (
-                  <span style={{ fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 50, background: 'rgba(39,174,96,.2)', color: '#4de889' }}>✅ مفتوحة الآن</span>
+                  <span style={{ background: 'rgba(39,174,96,.2)', color: '#4de889' }}>✅ مفتوحة الآن</span>
                 )}
                 {days === 0 && (
-                  <span style={{ fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 50, background: 'rgba(224,85,85,.2)', color: '#f87272' }}>🔴 أغلق التقديم</span>
+                  <span style={{ background: 'rgba(224,85,85,.2)', color: '#f87272' }}>🔴 أغلق التقديم</span>
                 )}
-                <span style={{ fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 50, background: 'rgba(47,168,137,.2)', color: '#3cc4a0' }}>
+                <span style={{ background: 'rgba(47,168,137,.2)', color: '#3cc4a0' }}>
                   {FUND_LABEL[s.funding_type]}
                 </span>
                 {safeLevels.map(l => (
-                  <span key={l} style={{ fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 50, background: 'rgba(255,255,255,.1)', color: 'rgba(255,255,255,.75)' }}>
+                  <span key={l} style={{ background: 'rgba(255,255,255,.1)', color: 'rgba(255,255,255,.75)' }}>
                     {LVL_LABEL[l]}
                   </span>
                 ))}
                 {days !== null && days > 0 && days <= 90 && (
-                  <span style={{ fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 50, background: 'rgba(244,160,28,.18)', color: '#ffc84a' }}>
+                  <span style={{ background: 'rgba(244,160,28,.18)', color: '#ffc84a' }}>
                     ⏳ ينتهي بعد {days} يوم
                   </span>
                 )}
@@ -262,17 +436,17 @@ export default function ScholarshipDetailClient() {
             </div>
           </div>
 
-          {/* Stats bar */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', borderTop: '1px solid rgba(255,255,255,.08)', margin: '0 -5%', padding: '0 5%' }}>
+          {/* STATS */}
+          <div className="detail-stats">
             {[
               [safeViews.toLocaleString(), 'مشاهدة'],
               [safeApplications, 'تقديم عبر UniPath'],
               [days != null && days > 0 ? `${days} يوم` : '—', 'متبقي للتقديم'],
               [formatDate(s.deadline), 'آخر موعد'],
             ].map(([val, lbl]) => (
-              <div key={String(lbl)} style={{ padding: '16px 0', textAlign: 'center', borderLeft: '1px solid rgba(255,255,255,.07)' }}>
-                <div style={{ fontSize: 18, fontWeight: 900, color: '#fff' }}>{val}</div>
-                <div style={{ fontSize: 10, color: 'rgba(255,255,255,.35)', marginTop: 3, fontWeight: 600 }}>{lbl}</div>
+              <div key={String(lbl)} className="detail-stats-item">
+                <div className="detail-stats-num">{val}</div>
+                <div className="detail-stats-label">{lbl}</div>
               </div>
             ))}
           </div>
@@ -280,13 +454,14 @@ export default function ScholarshipDetailClient() {
       </div>
 
       {/* MAIN GRID */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '28px 5%', display: 'grid', gridTemplateColumns: '1fr 340px', gap: 22, alignItems: 'start' }}>
+      <div className="detail-grid">
         {/* CONTENT */}
         <div>
-          {/* عن المنحة */}
           <Card title="📋 عن المنحة">
             <SLabel>الوصف</SLabel>
-            <p style={{ fontSize: 13.5, color: '#4a6580', lineHeight: 1.9 }}>{s.description_ar}</p>
+            <p style={{ fontSize: 'clamp(13px, 1.2vw, 13.5px)', color: '#4a6580', lineHeight: 1.9 }}>
+              {s.description_ar}
+            </p>
             {s.benefits_ar?.length > 0 && (
               <>
                 <SLabel>المزايا والمكرمات</SLabel>
@@ -302,10 +477,9 @@ export default function ScholarshipDetailClient() {
             )}
           </Card>
 
-          {/* شروط المنحة */}
           {s.conditions?.length > 0 && (
             <Card title="📜 شروط المنحة">
-              <p style={{ fontSize: 13.5, color: '#4a6580', lineHeight: 1.9, marginBottom: 16 }}>
+              <p style={{ fontSize: 'clamp(13px, 1.2vw, 13.5px)', color: '#4a6580', lineHeight: 1.9, marginBottom: 16 }}>
                 يجب أن تنطبق عليك جميع الشروط التالية للتقديم:
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -315,8 +489,8 @@ export default function ScholarshipDetailClient() {
                       {c.order}
                     </div>
                     <div>
-                      <div style={{ fontSize: 13, fontWeight: 800, color: '#0f2236', lineHeight: 1.6 }}>{c.title_ar}</div>
-                      {c.desc_ar && <div style={{ fontSize: 11, color: '#8fa3b8', marginTop: 2 }}>{c.desc_ar}</div>}
+                      <div style={{ fontSize: 'clamp(12px, 1.2vw, 13px)', fontWeight: 800, color: '#0f2236', lineHeight: 1.6 }}>{c.title_ar}</div>
+                      {c.desc_ar && <div style={{ fontSize: 'clamp(10px, 1vw, 11px)', color: '#8fa3b8', marginTop: 2 }}>{c.desc_ar}</div>}
                     </div>
                   </div>
                 ))}
@@ -324,16 +498,15 @@ export default function ScholarshipDetailClient() {
             </Card>
           )}
 
-          {/* المستندات */}
           {s.documents?.length > 0 && (
             <Card title="📂 المستندات المطلوبة">
               <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
                 {s.documents.map(d => (
-                  <div key={d.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 13px', background: '#eef2f7', borderRadius: 10, fontSize: 12.5, fontWeight: 600, color: '#1B3A5C' }}>
+                  <div key={d.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 13px', background: '#eef2f7', borderRadius: 10, fontSize: 'clamp(12px, 1.2vw, 12.5px)', fontWeight: 600, color: '#1B3A5C' }}>
                     <span style={{ fontSize: 15 }}>{d.icon}</span>
                     {d.name_ar}
                     {d.note_ar && (
-                      <span style={{ fontSize: 10, color: '#8fa3b8', marginRight: 'auto', fontWeight: 400 }}>{d.note_ar}</span>
+                      <span style={{ fontSize: 'clamp(9px, 1vw, 10px)', color: '#8fa3b8', marginRight: 'auto', fontWeight: 400 }}>{d.note_ar}</span>
                     )}
                   </div>
                 ))}
@@ -341,7 +514,6 @@ export default function ScholarshipDetailClient() {
             </Card>
           )}
 
-          {/* الخط الزمني */}
           {s.timeline?.length > 0 && (
             <Card title="📅 المواعيد الزمنية">
               <div>
@@ -360,11 +532,11 @@ export default function ScholarshipDetailClient() {
                       )}
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 10, fontWeight: 800, color: t.is_past ? '#8fa3b8' : '#2FA889', marginBottom: 3, fontFamily: 'monospace' }}>
+                      <div style={{ fontSize: 'clamp(9px, 1vw, 10px)', fontWeight: 800, color: t.is_past ? '#8fa3b8' : '#2FA889', marginBottom: 3, fontFamily: 'monospace' }}>
                         {t.date_label}
                       </div>
-                      <div style={{ fontSize: 13, fontWeight: 800, color: '#1B3A5C' }}>{t.title_ar}</div>
-                      {t.desc_ar && <div style={{ fontSize: 11, color: '#8fa3b8', marginTop: 2 }}>{t.desc_ar}</div>}
+                      <div style={{ fontSize: 'clamp(12px, 1.2vw, 13px)', fontWeight: 800, color: '#1B3A5C' }}>{t.title_ar}</div>
+                      {t.desc_ar && <div style={{ fontSize: 'clamp(10px, 1vw, 11px)', color: '#8fa3b8', marginTop: 2 }}>{t.desc_ar}</div>}
                     </div>
                   </div>
                 ))}
@@ -375,10 +547,11 @@ export default function ScholarshipDetailClient() {
 
         {/* SIDEBAR */}
         <div>
-          {/* CTA Card */}
-          <div style={{ background: 'linear-gradient(145deg,#122845,#2a4f78)', borderRadius: 18, padding: 22, marginBottom: 18, border: '1px solid rgba(255,255,255,.06)' }}>
-            <div style={{ fontSize: 16, fontWeight: 900, color: '#fff', marginBottom: 4 }}>قدّم مع UniPath</div>
-            <div style={{ fontSize: 12, color: 'rgba(255,255,255,.48)', marginBottom: 18, lineHeight: 1.7 }}>
+          <div className="detail-cta">
+            <div style={{ fontSize: 'clamp(15px, 1.5vw, 16px)', fontWeight: 900, color: '#fff', marginBottom: 4 }}>
+              قدّم مع UniPath
+            </div>
+            <div style={{ fontSize: 'clamp(11px, 1.2vw, 12px)', color: 'rgba(255,255,255,.48)', marginBottom: 18, lineHeight: 1.7 }}>
               فريقنا يجهّز ملفك ويقدّم بأعلى جودة — تقديم + متابعة كاملة
             </div>
 
@@ -394,37 +567,111 @@ export default function ScholarshipDetailClient() {
 
             <button
               onClick={() => setFormOpen(o => !o)}
-              style={{ ...btnStyle('rgba(255,255,255,.07)'), border: '1px solid rgba(255,255,255,.18)', color: 'rgba(255,255,255,.8)', fontSize: 12, padding: '10px 12px' }}
+              style={{ ...btnStyle('rgba(255,255,255,.07)'), border: '1px solid rgba(255,255,255,.18)', color: 'rgba(255,255,255,.8)', fontSize: 'clamp(11px, 1.2vw, 12px)', padding: '10px 12px' }}
             >
               ✍️ سجّل بياناتك ونتواصل معك
             </button>
           </div>
 
-          {/* FORM */}
           {formOpen && (
             <div style={{ background: '#fff', borderRadius: 18, border: '1px solid #dde5f0', overflow: 'hidden', marginBottom: 18 }}>
-              <div style={{ padding: '13px 16px', borderBottom: '1px solid #eef2f7', fontSize: 13, fontWeight: 900, color: '#1B3A5C', background: '#e6f7f3' }}>
+              <div style={{ padding: '13px 16px', borderBottom: '1px solid #eef2f7', fontSize: 'clamp(12px, 1.2vw, 13px)', fontWeight: 900, color: '#1B3A5C', background: '#e6f7f3' }}>
                 📝 سجّل اهتمامك — {s.name_ar}
               </div>
-              <div style={{ padding: 16 }}>
+              <div style={{ padding: 'clamp(12px, 1.5vw, 16px)' }}>
                 {formState === 'success' ? (
                   <div style={{ textAlign: 'center', padding: '32px 0' }}>
                     <div style={{ fontSize: 48, marginBottom: 12 }}>✅</div>
-                    <div style={{ fontSize: 16, fontWeight: 900, color: '#1B3A5C', marginBottom: 6 }}>تم استلام طلبك!</div>
-                    <div style={{ fontSize: 13, color: '#8fa3b8', lineHeight: 1.8 }}>
+                    <div style={{ fontSize: 'clamp(15px, 1.5vw, 16px)', fontWeight: 900, color: '#1B3A5C', marginBottom: 6 }}>تم استلام طلبك!</div>
+                    <div style={{ fontSize: 'clamp(12px, 1.2vw, 13px)', color: '#8fa3b8', lineHeight: 1.8 }}>
                       سيتواصل معك فريق UniPath خلال 24 ساعة على واتساب.
                     </div>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} noValidate>
-                    {/* ... نفس الفورم ... */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
+                      <div>
+                        <label style={lblStyle()}>الاسم الكامل <span style={{ color: '#e05555' }}>*</span></label>
+                        <input value={form.name} onChange={inp('name')} placeholder="أحمد محمد علي" style={inpStyle(isErr('name'))} />
+                      </div>
+                      <div>
+                        <label style={lblStyle()}>الجنسية <span style={{ color: '#e05555' }}>*</span></label>
+                        <select value={form.nationality} onChange={inp('nationality')} style={inpStyle(isErr('nationality'))}>
+                          <option value="">اختر...</option>
+                          {['سوداني', 'مصري', 'سعودي', 'أردني', 'سوري', 'يمني', 'أخرى'].map(n => <option key={n}>{n}</option>)}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
+                      <div>
+                        <label style={lblStyle()}>رقم الواتساب <span style={{ color: '#e05555' }}>*</span></label>
+                        <input value={form.whatsapp} onChange={inp('whatsapp')} placeholder="+249..." dir="ltr" style={inpStyle(isErr('whatsapp'))} />
+                      </div>
+                      <div>
+                        <label style={lblStyle()}>البريد الإلكتروني <span style={{ color: '#e05555' }}>*</span></label>
+                        <input type="email" value={form.email} onChange={inp('email')} placeholder="email@..." dir="ltr" style={inpStyle(isErr('email'))} />
+                      </div>
+                    </div>
+
+                    <div style={{ marginBottom: 10 }}>
+                      <label style={lblStyle()}>المرحلة الدراسية <span style={{ color: '#e05555' }}>*</span></label>
+                      <select value={form.level} onChange={inp('level')} style={inpStyle(isErr('level'))}>
+                        <option value="">اختر...</option>
+                        {['طالب بكالوريوس — سنة أخيرة', 'خريج بكالوريوس', 'طالب ماجستير', 'خريج ماجستير', 'باحث / دكتوراه'].map(l => (
+                          <option key={l}>{l}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div style={{ marginBottom: 10 }}>
+                      <label style={lblStyle()}>التخصص <span style={{ fontSize: 10, color: '#8fa3b8' }}>(اختياري)</span></label>
+                      <input value={form.major} onChange={inp('major')} placeholder="هندسة / طب / علوم حاسوب..." style={inpStyle(false)} />
+                    </div>
+
+                    <div style={{ marginBottom: 10 }}>
+                      <label style={lblStyle()}>شهادة اللغة <span style={{ fontSize: 10, color: '#8fa3b8' }}>(اختياري)</span></label>
+                      <select value={form.langCert} onChange={inp('langCert')} style={inpStyle(false)}>
+                        <option value="">اختر...</option>
+                        {['IELTS 6.0+', 'IELTS 6.5+', 'IELTS 7.0+', 'Goethe B1', 'Goethe B2', 'لا يوجد حتى الآن'].map(l => (
+                          <option key={l}>{l}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div style={{ marginBottom: 10 }}>
+                      <label style={lblStyle()}>ملاحظات <span style={{ fontSize: 10, color: '#8fa3b8' }}>(اختياري)</span></label>
+                      <textarea value={form.notes} onChange={inp('notes')} rows={3} placeholder="هل قدّمت على منح من قبل؟..." style={{ ...inpStyle(false), resize: 'vertical' as const }} />
+                    </div>
+
+                    {errors.length > 0 && (
+                      <div style={{ fontSize: 11, color: '#e05555', background: '#fce8e8', padding: '9px 12px', borderRadius: 9, marginBottom: 10, fontWeight: 600 }}>
+                        ⚠️ الرجاء تعبئة جميع الحقول المطلوبة (*)
+                      </div>
+                    )}
+                    {formState === 'error' && (
+                      <div style={{ fontSize: 11, color: '#e05555', background: '#fce8e8', padding: '9px 12px', borderRadius: 9, marginBottom: 10, fontWeight: 600 }}>
+                        حدث خطأ — يرجى المحاولة مرة أخرى أو التواصل عبر واتساب
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={formState === 'loading'}
+                      style={{ ...btnStyle('#1B3A5C'), opacity: formState === 'loading' ? 0.7 : 1 }}
+                    >
+                      {formState === 'loading' ? 'جاري الإرسال...' : 'إرسال — سنتواصل معك خلال 24 ساعة'}
+                    </button>
+
+                    <div style={{ fontSize: 10, color: '#8fa3b8', textAlign: 'center', marginTop: 8, lineHeight: 1.7 }}>
+                      🔒 بياناتك محمية ولن تُشارك مع أي جهة خارجية
+                    </div>
                   </form>
                 )}
               </div>
             </div>
           )}
 
-          {/* Info Grid */}
           <Card title="ℹ️ تفاصيل سريعة">
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
               {[
@@ -434,8 +681,8 @@ export default function ScholarshipDetailClient() {
                 ['آخر موعد', formatDate(s.deadline)],
               ].map(([lbl, val]) => (
                 <div key={lbl} style={{ background: '#f4f7fb', borderRadius: 11, padding: '11px 13px' }}>
-                  <div style={{ fontSize: 10, color: '#8fa3b8', fontWeight: 700, marginBottom: 4 }}>{lbl}</div>
-                  <div style={{ fontSize: 12.5, fontWeight: 800, color: '#1B3A5C' }}>{val}</div>
+                  <div style={{ fontSize: 'clamp(9px, 1vw, 10px)', color: '#8fa3b8', fontWeight: 700, marginBottom: 4 }}>{lbl}</div>
+                  <div style={{ fontSize: 'clamp(11px, 1.2vw, 12.5px)', fontWeight: 800, color: '#1B3A5C' }}>{val}</div>
                 </div>
               ))}
             </div>

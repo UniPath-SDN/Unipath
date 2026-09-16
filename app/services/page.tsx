@@ -440,7 +440,7 @@ export default function ServicesPage() {
                 <Navbar activePage="services" />
 
                 {/* HERO */}
-                <section className="srv-hero">
+                <section className="srv-hero ">
                     <div className="breadcrumb">
                         <Link
                             href="/"

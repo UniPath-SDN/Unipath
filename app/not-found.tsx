@@ -16,13 +16,13 @@ export default function NotFound() {
     }}>
       <div style={{ fontSize: 80, marginBottom: 20 }}>🔍</div>
       <h1 style={{ fontSize: 32, fontWeight: 900, color: '#1B3A5C', marginBottom: 12 }}>
-        المنحة غير موجودة
+        الصفحة غير متوفرة حالياً
       </h1>
       <p style={{ fontSize: 16, color: '#8fa3b8', marginBottom: 30 }}>
-        قد تكون المنحة انتهت أو تم حذفها
+        عذراً، الصفحة التي تبحث عنها غير موجودة أو تم حذفها
       </p>
       <Link 
-        href="/scholarships" 
+        href="/" 
         style={{
           background: '#2FA889',
           color: '#fff',
@@ -32,7 +32,7 @@ export default function NotFound() {
           fontWeight: 700,
         }}
       >
-        ← العودة للمنح
+        ← العودة للصفحة الرئيسية
       </Link>
     </div>
   )

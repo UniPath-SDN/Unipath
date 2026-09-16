@@ -177,8 +177,8 @@ export default function ScholarshipsSection() {
               <div className={`sch-img ${GRAD[i % GRAD.length]}`} style={{ position: 'relative', overflow: 'hidden' }}>
                 {/* ✅ الصورة */}
                 {s.image_url ? (
-                  <img 
-                    src={s.image_url} 
+                  <img
+                    src={s.image_url}
                     alt={s.name_ar}
                     style={{
                       width: '100%',
