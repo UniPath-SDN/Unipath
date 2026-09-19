@@ -323,7 +323,7 @@ export default function CountryPage() {
             احصل على قبول مضمون واستشارة مجانية
           </p>
           <Link
-            href={`https://wa.me/249123456789?text=${encodeURIComponent(`السلام عليكم، أريد الاستفسار عن القبولات الخاصة في ${country.name_ar}`)}`}
+            href={`https://wa.me/201500276855?text=${encodeURIComponent(`السلام عليكم، أريد الاستفسار عن القبولات الخاصة في ${country.name_ar}`)}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{

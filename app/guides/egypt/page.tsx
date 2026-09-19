@@ -1273,7 +1273,7 @@ export default function EgyptGuidePage() {
             فريقنا مستعد للإجابة على جميع استفساراتك حول الدراسة في مصر
           </p>
           <a
-            href="https://wa.me/249123456789"
+            href="https://wa.me/201500276855"
             target="_blank"
             rel="noopener noreferrer"
             style={{

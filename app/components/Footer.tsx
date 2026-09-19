@@ -2,7 +2,7 @@ import Link from 'next/link'
 import './footer.css'
 import { FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa'
 
-const WA     = 'https://wa.me/249123456789'
+const WA     = 'https://wa.me/201500276855'
 const WA_MSG = encodeURIComponent('السلام عليكم، أريد الاستفسار عن خدمات UniPath')
 
 export default function Footer() {

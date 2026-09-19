@@ -143,9 +143,9 @@ export default function ContactPage() {
             {/* ✅ Contact Cards */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 32 }} className="contact-cards">
               {[
-                { icon: <MessageCircle size={22} color="#25D366" />, label: 'واتساب', value: '+249 123 456 789', link: 'https://wa.me/249123456789', color: '#25D366' },
+                { icon: <MessageCircle size={22} color="#25D366" />, label: 'واتساب', value: '+20 150 027 6855', link: 'https://wa.me/201500276855', color: '#25D366' },
                 { icon: <Mail size={22} color="#2FA889" />, label: 'البريد الإلكتروني', value: 'unipathsdn@gmail.com', link: 'mailto:unipathsdn@gmail.com', color: '#2FA889' },
-                { icon: <Phone size={22} color="#1B3A5C" />, label: 'الهاتف', value: '+249 123 456 789', link: 'tel:+249123456789', color: '#1B3A5C' },
+                { icon: <Phone size={22} color="#1B3A5C" />, label: 'الهاتف', value: '+20 150 027 6855', link: 'tel:+201500276855', color: '#1B3A5C' },
                 { icon: <MapPin size={22} color="#FF9800" />, label: 'العنوان', value: 'الخرطوم، السودان', link: '#', color: '#FF9800' },
               ].map((item) => (
                 <a
@@ -379,7 +379,7 @@ export default function ContactPage() {
                       name="phone"
                       value={form.phone}
                       onChange={handleChange}
-                      placeholder="+249 123 456 789"
+                      placeholder="+20 150 027 6855"
                       style={{
                         width: '100%',
                         padding: 'clamp(8px, 1vw, 10px) clamp(10px, 1.2vw, 14px)',
@@ -583,7 +583,7 @@ export default function ContactPage() {
             احصل على استشارتك المجانية الآن
           </p>
           <a
-            href="https://wa.me/249123456789?text=السلام%20عليكم،%20أريد%20استشارة%20مجانية"
+            href="https://wa.me/201500276855?text=السلام%20عليكم،%20أريد%20استشارة%20مجانية"
             target="_blank"
             rel="noopener noreferrer"
             style={{

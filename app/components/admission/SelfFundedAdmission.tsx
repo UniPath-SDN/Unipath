@@ -341,7 +341,7 @@ export default function SelfFundedAdmission() {
               <p>احصل على استشارتك المجانية الآن</p>
             </div>
             <a
-              href="https://wa.me/249123456789?text=السلام%20عليكم،%20أريد%20الاستفسار%20عن%20الدراسة%20في%20الخارج"
+              href="https://wa.me/201500276855?text=السلام%20عليكم،%20أريد%20الاستفسار%20عن%20الدراسة%20في%20الخارج"
               target="_blank"
               rel="noopener noreferrer"
               className="admission-cta-btn"

@@ -115,7 +115,7 @@ export default function TermsPage() {
             </p>
             <ul className="policy-list">
               <li><Check size={16} color="#2FA889" /> البريد الإلكتروني: <a href="mailto:unipathsdn@gmail.com" style={{ color: '#2FA889', fontWeight: 700 }}>unipathsdn@gmail.com</a></li>
-              <li><Check size={16} color="#2FA889" /> واتساب: <a href="https://wa.me/249123456789" target="_blank" rel="noopener noreferrer" style={{ color: '#25D366', fontWeight: 700 }}>249123456789</a></li>
+              <li><Check size={16} color="#2FA889" /> واتساب: <a href="https://wa.me/201500276855" target="_blank" rel="noopener noreferrer" style={{ color: '#25D366', fontWeight: 700 }}>201500276855</a></li>
             </ul>
           </Section>
 

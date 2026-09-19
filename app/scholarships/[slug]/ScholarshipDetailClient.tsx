@@ -123,7 +123,7 @@ export default function ScholarshipDetailClient({
 
   const days = daysLeft(s.deadline)
   const waText = encodeURIComponent(`السلام عليكم، أريد الاستفسار عن ${s.name_ar}`)
-  const waLink = `https://wa.me/249123456789?text=${waText}`
+  const waLink = `https://wa.me/201500276855?text=${waText}`
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -144,7 +144,7 @@ export default function ScholarshipDetailClient({
         (form.langCert ? `\nشهادة اللغة: ${form.langCert}` : '') +
         (form.notes ? `\nملاحظات: ${form.notes}` : '')
       )
-      setTimeout(() => window.open(`https://wa.me/249123456789?text=${msg}`, '_blank'), 1400)
+      setTimeout(() => window.open(`https://wa.me/201500276855?text=${msg}`, '_blank'), 1400)
     } catch {
       setFormState('error')
     }

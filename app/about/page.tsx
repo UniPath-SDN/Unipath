@@ -95,7 +95,7 @@ export default function AboutPage() {
           </p>
           <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
             <a
-              href={`https://wa.me/249123456789?text=${encodeURIComponent('السلام عليكم، أريد الاستفسار عن خدمات UniPath')}`}
+              href={`https://wa.me/201500276855?text=${encodeURIComponent('السلام عليكم، أريد الاستفسار عن خدمات UniPath')}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -397,7 +397,7 @@ export default function AboutPage() {
             تواصل معنا اليوم، و دعنا نساعدك في تحقيق حلمك الدراسي.
           </p>
           <a
-            href={`https://wa.me/249123456789?text=${encodeURIComponent('السلام عليكم، أريد الاستفسار عن خدمات UniPath')}`}
+            href={`https://wa.me/201500276855?text=${encodeURIComponent('السلام عليكم، أريد الاستفسار عن خدمات UniPath')}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{

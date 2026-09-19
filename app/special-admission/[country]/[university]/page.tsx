@@ -416,7 +416,7 @@ export default function UniversityPage() {
               </div>
 
               <a
-                href={`https://wa.me/249123456789?text=${encodeURIComponent(`السلام عليكم، أريد الاستفسار عن القبول الخاص في ${university.name_ar}`)}`}
+                href={`https://wa.me/201500276855?text=${encodeURIComponent(`السلام عليكم، أريد الاستفسار عن القبول الخاص في ${university.name_ar}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
