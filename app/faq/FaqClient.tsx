@@ -613,12 +613,12 @@ export default function FaqClient() {
   )
 
   return (
-    <div className={styles.faqPage}>
+    <div className={styles.faqPage } style={{ marginTop: '40px' }}>
       <Navbar activePage="faq" />
 
       {/* HERO */}
-      <section className={styles.faqHero}>
-        <div className={styles.breadcrumb}>
+      <section className={styles.faqHero} >
+        <div className=  {styles.breadcrumb}>
           <Link href="/" style={{ color: '#3cc4a0', textDecoration: 'none' }}>
             الرئيسية
           </Link>

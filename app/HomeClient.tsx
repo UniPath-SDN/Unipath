@@ -68,7 +68,7 @@ export default function HomeClient({
       <Navbar />
 
       {/* HERO */}
-      <section className="hero mt-12">
+      <section className="hero mt-8">
         {/* ✅ شبكة الخلفية */}
         <div className="hero-grid "></div>
 

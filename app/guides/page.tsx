@@ -23,7 +23,7 @@ const GUIDES = [
     flag: '🇨🇳',
     image: '/images/china-guide.jpg',
     description: 'دليل شامل للدراسة في الصين، منحة CSC، الجامعات الصينية، والحياة الطلابية.',
-    articles: 8,
+    articles: 18,
     universities: '40+',
     color: '#DE2910',
   },

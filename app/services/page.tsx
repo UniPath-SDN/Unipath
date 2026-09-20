@@ -21,7 +21,7 @@ const SERVICES = [
     icon: "📝",
     name: "خطاب النية (SOP)",
     name_en: "Statement of Purpose",
-    sdg: "15,000",
+    sdg: "20,000",
     usd: "$7",
     desc: "كتابة خطاب نية احترافي يعكس أهدافك الأكاديمية ويقنع لجنة القبول.",
   },
@@ -29,7 +29,7 @@ const SERVICES = [
     icon: "📄",
     name: "خطاب التوصية",
     name_en: "Recommendation Letter",
-    sdg: "15,000",
+    sdg: "20,000",
     usd: "$7",
     desc: "صياغة خطاب توصية قوي من الأستاذ أو صاحب العمل بأسلوب أكاديمي.",
   },
@@ -37,15 +37,15 @@ const SERVICES = [
     icon: "🌐",
     name: "ترجمة المستندات",
     name_en: "Document Translation / page",
-    sdg: "35,000",
+    sdg: "40,000",
     usd: "$10",
-    desc: "ترجمة معتمدة للمستندات الرسمية — السعر لكل صفحة.",
+    desc: "ترجمة احترافية للمستندات الرسمية والأكاديمية — السعر لكل صفحة.",
   },
   {
     icon: "📋",
     name: "الخطة الدراسية",
     name_en: "Study Plan",
-    sdg: "30,000",
+    sdg: "45,000",
     usd: "$10",
     desc: "إعداد خطة دراسية واضحة تُبيّن أهدافك وكيف ستستفيد من المنحة.",
   },
@@ -53,7 +53,7 @@ const SERVICES = [
     icon: "💼",
     name: "CV للمنح الدراسية",
     name_en: "Scholarship CV",
-    sdg: "45,000",
+    sdg: "55,000",
     usd: "$15",
     desc: "CV أكاديمي مخصص للتقديم على المنح الدراسية الدولية.",
   },
@@ -61,7 +61,7 @@ const SERVICES = [
     icon: "👔",
     name: "CV للعمل",
     name_en: "Professional CV",
-    sdg: "55,000",
+    sdg: "65,000",
     usd: "$18",
     desc: "CV احترافي مصمم للتقديم على فرص العمل والتطوير المهني.",
   },
@@ -71,7 +71,7 @@ const PACKAGES = [
   {
     name: "تقديم المنحة فقط",
     name_en: "Application Only",
-    sdg: "75,000",
+    sdg: "85,000",
     usd: "$20",
     best: false,
     includes: ["تقديم المنحة كاملاً", "متابعة حتى الإرسال"],
@@ -79,7 +79,7 @@ const PACKAGES = [
   {
     name: "تقديم + خطاب النية",
     name_en: "Application + SOP",
-    sdg: "90,000",
+    sdg: "105,000",
     usd: "$27",
     best: false,
     includes: ["تقديم المنحة كاملاً", "خطاب النية (SOP)", "متابعة حتى الإرسال"],
@@ -87,7 +87,7 @@ const PACKAGES = [
   {
     name: "تقديم + نية + 1 توصية",
     name_en: "Application + SOP + 1 Rec",
-    sdg: "105,000",
+    sdg: "125,000",
     usd: "$34",
     best: false,
     includes: [
@@ -100,7 +100,7 @@ const PACKAGES = [
   {
     name: "تقديم + نية + 2 توصية",
     name_en: "Application + SOP + 2 Rec",
-    sdg: "120,000",
+    sdg: "145,000",
     usd: "$41",
     best: false,
     includes: [
@@ -113,7 +113,7 @@ const PACKAGES = [
   {
     name: "الكامل + 1 توصية + CV",
     name_en: "Full + 1 Rec + CV",
-    sdg: "140,000",
+    sdg: "180,000",
     usd: "$49",
     best: true,
     includes: [
@@ -127,7 +127,7 @@ const PACKAGES = [
   {
     name: "الكامل + 2 توصية + CV",
     name_en: "Full + 2 Rec + CV",
-    sdg: "155,000",
+    sdg: "200,000",
     usd: "$56",
     best: false,
     includes: [
@@ -144,8 +144,8 @@ const PAYMENT_METHODS = [
   {
     icon: "/images/payment/bankak.svg",
     name: "تحويل بنكي",
-    details: "أشرف آدم حسن\nرقم الحساب: 4739768",
-    rawDetails: "4739768",
+    details: "أكرم آدم حسن\nرقم الحساب: 3464440",
+    rawDetails: "3464440",
     currency: "SDG",
   },
   {
@@ -182,8 +182,51 @@ export default function ServicesPage() {
     setTimeout(() => setCopied(null), 2000);
   }
 
+  const faqData = [
+    { question: "ما الخدمات التي تقدمونها للطلاب الراغبين في الدراسة بالخارج؟", answer: "نقدم مراجعة الأهلية، وكتابة خطاب النية، وإعداد خطابات التوصية والسيرة الذاتية للمنح أو العمل، وترجمة المستندات، وتجهيز طلبات المنح والجامعات ومتابعتها حتى صدور النتيجة." },
+    { question: "هل تضمنون الحصول على المنحة أو القبول الجامعي؟", answer: "لا. نساعدك في تجهيز ملف قوي وتقديم الطلب بطريقة صحيحة، لكن قرار القبول أو الرفض يعود إلى الجامعة أو الجهة المانحة وحدها، ولا تمثل رسوم الخدمة ضماناً للقبول." },
+    { question: "كم تستغرق كتابة خطاب النية أو إعداد السيرة الذاتية؟", answer: "تختلف المدة حسب طبيعة الملف والموعد النهائي وعدد المستندات. نحدد الجدول الزمني بعد مراجعة معلوماتك، لذلك يُفضّل التواصل معنا مبكراً قبل إغلاق باب التقديم." },
+    { question: "هل تقدمون خدمات التقديم على المنح للطلاب السودانيين؟", answer: "نعم، نساعد الطلاب السودانيين والطلاب من مختلف الدول في تجهيز ملفات المنح الدراسية والقبول الجامعي وفق متطلبات كل فرصة." },
+    { question: "ما المستندات المطلوبة لبدء مراجعة الملف؟", answer: "عادةً نحتاج إلى السيرة الذاتية أو المعلومات الدراسية، الشهادات وكشف الدرجات، الخبرات والإنجازات، وبيانات المنحة أو الجامعة المستهدفة. نرسل لك قائمة مخصصة بعد التواصل الأول." },
+    { question: "هل رسوم التقديم قابلة للاسترداد؟", answer: "تُدفع الرسوم مقابل العمل المنجز على الملف. لا تُسترد الرسوم عند تأخر العميل في إرسال المستندات أو توقفه عن التقديم أو بعد إرسال الطلب، كما أن رسوم الجامعة أو الجهة المانحة منفصلة عن أتعاب المكتب." }
+  ];
+
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqData.map((item) => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": { "@type": "Answer", "text": item.answer }
+    }))
+  };
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "UniPath SDN",
+    "url": "https://unipathsdn.com/services",
+    "description": "خدمات التقديم على المنح الدراسية والجامعات، كتابة خطاب النية وخطابات التوصية وإعداد السيرة الذاتية والترجمة.",
+    "areaServed": ["السودان", "مصر", "العالم"],
+    "serviceType": ["التقديم على المنح الدراسية", "كتابة خطاب النية", "خطابات التوصية", "إعداد السيرة الذاتية", "ترجمة المستندات"],
+    "sameAs": ["https://wa.me/201500276855"]
+  };
+
   return (
     <>
+      <head>
+        <title>خدمات التقديم على المنح الدراسية | UniPath SDN</title>
+        <meta name="description" content="خدمات التقديم على المنح الدراسية والجامعات: مراجعة الأهلية، خطاب النية، خطابات التوصية، CV، الترجمة والمتابعة حتى صدور النتيجة." />
+        <meta name="keywords" content="التقديم على المنح الدراسية, منح دراسية خارجية, منح دراسية للسودانيين, خطاب النية, خطاب توصية, CV منح, ترجمة مستندات" />
+        <link rel="canonical" href="https://unipathsdn.com/services" />
+        <meta property="og:title" content="خدمات التقديم على المنح الدراسية | UniPath SDN" />
+        <meta property="og:description" content="جهّز ملفك الأكاديمي وقدّم على المنح والجامعات بخطوات واضحة ودعم متخصص." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://unipathsdn.com/services" />
+        <meta name="twitter:card" content="summary" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
+      </head>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap');
 
@@ -447,6 +490,15 @@ export default function ServicesPage() {
         .wa-float{position:fixed;bottom:32px;left:32px;z-index:999;width:62px;height:62px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 8px 28px rgba(37,211,102,.45);animation:waFloat 3s ease-in-out infinite}
         .wa-float:hover{transform:scale(1.1)}
 
+        .faq-section{background:#f8fafb}
+        .faq-list{max-width:900px;margin:0 auto;display:grid;gap:14px}
+        .faq-item{background:white;border:1.5px solid var(--gray-200);border-radius:16px;padding:0 22px;transition:border-color .25s,box-shadow .25s}
+        .faq-item[open]{border-color:var(--teal);box-shadow:0 10px 28px rgba(27,58,92,.07)}
+        .faq-item summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 0;color:var(--navy);font-size:1rem;font-weight:800;line-height:1.6}
+        .faq-item summary::-webkit-details-marker{display:none}
+        .faq-item summary::after{content:'+';color:var(--teal);font-size:1.5rem;font-weight:400;flex-shrink:0;transition:transform .2s}
+        .faq-item[open] summary::after{content:'−';transform:rotate(180deg)}
+        .faq-answer{border-top:1px solid var(--gray-200);padding:16px 0 20px;color:var(--gray-600);font-size:.92rem;line-height:2}
         /* ============ RESPONSIVE ============ */
         @media (max-width: 1024px) {
           .srv-hero{padding:120px 30px 60px}
@@ -644,7 +696,7 @@ export default function ServicesPage() {
               استشارة مجانية
             </a>
             <Link href="/scholarships" className="btn-outline-white">
-              تصفح المنح →
+              تصفح المنح الدراسية →
             </Link>
           </div>
         </section>
@@ -744,7 +796,7 @@ export default function ServicesPage() {
               <span className="section-eyebrow">كيف نعمل</span>
               <h2 className="section-title">رحلتك معنا في 4 خطوات</h2>
               <p className="section-sub" style={{ margin: "0 auto" }}>
-                من أول رسالة لحد ما تسافر — نحن معاك في كل خطوة
+                من أول استشارة حتى إرسال الطلب ومتابعته — نحن معك في كل خطوة
               </p>
             </div>
             <div className="how-grid">
@@ -912,6 +964,27 @@ export default function ServicesPage() {
           </div>
         </section>
 
+        {/* FAQ */}
+        <section className="section faq-section" aria-labelledby="faq-title">
+          <div style={{ maxWidth: 1160, margin: "0 auto" }}>
+            <div className="section-header center">
+              <span className="section-eyebrow">الأسئلة الشائعة</span>
+              <h2 id="faq-title" className="section-title">أسئلة شائعة عن التقديم على المنح الدراسية</h2>
+              <p className="section-sub" style={{ margin: "0 auto" }}>
+                إجابات واضحة عن خدماتنا، المستندات المطلوبة، المدة، والرسوم قبل بدء العمل على ملفك.
+              </p>
+            </div>
+            <div className="faq-list">
+              {faqData.map((item) => (
+                <details className="faq-item" key={item.question}>
+                  <summary>{item.question}</summary>
+                  <p className="faq-answer">{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* URGENCY */}
         <section
           className="section"
@@ -970,7 +1043,7 @@ export default function ServicesPage() {
               تواصل عبر واتساب
             </a>
             <Link href="/scholarships" className="btn-outline-white">
-              تصفح المنح →
+              تصفح المنح الدراسية →
             </Link>
           </div>
         </section>

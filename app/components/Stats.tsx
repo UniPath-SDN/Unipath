@@ -28,7 +28,7 @@ export default function Stats() {
         setStats([
           { id: 'students', prefix: '+', value: '1K', label: 'طالب تم مساعدتهم', description: 'حول العالم' },
           { id: 'countries', prefix: '+', value: '37', label: 'دولة ووجهة', description: 'دراسية' },
-          { id: 'success', prefix: '', value: '65%', label: 'نسبة نجاح', description: 'الطلبات' },
+          { id: 'success', prefix: '', value: '77%', label: 'نسبة نجاح', description: 'الطلبات' },
           { id: 'partners', prefix: '+', value: '30', label: 'شراكات منح', description: 'نشطة' },
         ])
       } finally {
