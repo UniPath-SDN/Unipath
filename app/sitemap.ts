@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next'
 
 const baseUrl = 'https://www.unipathsdn.com'
 
-export default function sitemap( ): MetadataRoute.Sitemap {
+export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: `${baseUrl}/`,
@@ -34,6 +34,19 @@ export default function sitemap( ): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/guides/egypt`,
+      lastModified: '2026-09-29',
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/guides/china`,
+      lastModified: '2026-09-29',
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+
     {
       url: `${baseUrl}/scholarships`,
       lastModified: '2026-09-29',

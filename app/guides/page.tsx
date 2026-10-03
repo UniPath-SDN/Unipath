@@ -9,10 +9,12 @@ import { BookOpen, Globe, GraduationCap, Users, Award, FileText, ChevronLeft } f
 const GUIDES = [
   {
     id: 'egypt',
-    name: 'مصر',
+    name: 'الدراسة في مصر',
     flag: '🇪🇬',
     image: '/images/egypt-guide.jpg',
-    description: 'دليل شامل للدراسة في الجامعات المصرية، نظام التعليم، المنح، والتأشيرات.',
+    description:
+  'دليل الدراسة في مصر للطلاب السودانيين: الجامعات، القبول، المنح، التكاليف والتأشيرة.',
+
     articles: 12,
     universities: '50+',
     color: '#1B3A5C',
@@ -146,7 +148,7 @@ export default function GuidesPage() {
                     color: '#1B3A5C',
                     marginBottom: 4,
                   }}>
-                    {guide.name}
+                    دليل الدراسة في {guide.name}
                   </h3>
                   <p style={{
                     fontSize: '0.85rem',

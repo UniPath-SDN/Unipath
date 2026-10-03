@@ -218,11 +218,11 @@ export default function ServicesPage() {
         <title>خدمات التقديم على المنح الدراسية | UniPath SDN</title>
         <meta name="description" content="خدمات التقديم على المنح الدراسية والجامعات: مراجعة الأهلية، خطاب النية، خطابات التوصية، CV، الترجمة والمتابعة حتى صدور النتيجة." />
         <meta name="keywords" content="التقديم على المنح الدراسية, منح دراسية خارجية, منح دراسية للسودانيين, خطاب النية, خطاب توصية, CV منح, ترجمة مستندات" />
-        <link rel="canonical" href="https://unipathsdn.com/services" />
+        <link rel="canonical" href="https://wwww.unipathsdn.com/services" />
         <meta property="og:title" content="خدمات التقديم على المنح الدراسية | UniPath SDN" />
         <meta property="og:description" content="جهّز ملفك الأكاديمي وقدّم على المنح والجامعات بخطوات واضحة ودعم متخصص." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://unipathsdn.com/services" />
+        <meta property="og:url" content="https://www.unipathsdn.com/services" />
         <meta name="twitter:card" content="summary" />
         <script
   type="application/ld+json"
@@ -692,8 +692,9 @@ export default function ServicesPage() {
             خدماتنا <span>وأسعارنا</span>
           </h1>
           <p>
-            من تجهيز خطاب النية وخطابات التوصية، لحد ما نكمّل ملفك بالكامل ونرسل
-            التقديم بالطريقة الصحيحة، ونتابع معاك لحد ما تسافر بإذن الله 💙
+  تعرف على أسعار خدمات UniPath للتقديم على المنح الدراسية والقبول الجامعي.
+  تشمل الخدمات كتابة خطاب النية، وخطابات التوصية، وإعداد السيرة الذاتية،
+  وترجمة المستندات، وباقات التقديم الكاملة.
           </p>
           <div className="cta-btns">
             <a
