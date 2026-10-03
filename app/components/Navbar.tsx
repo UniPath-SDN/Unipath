@@ -18,7 +18,7 @@ export default function Navbar({ activePage = '' }: { activePage?: string }) {
       <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
         <li><Link href="/" className={activePage === 'scholarships' ? 'active' : ''}>الرئيسية</Link></li>
         <li><Link href="/scholarships" className={activePage === 'scholarships' ? 'active' : ''}>المنح الدراسية</Link></li>
-        <li><Link href="/services"     className={activePage === 'services'     ? 'active' : ''}>عرض الخدمات والأسعار</Link></li>
+        <li><Link href="/services"     className={activePage === 'services'     ? 'active' : ''}> الخدمات والأسعار</Link></li>
         <li><Link href="/self-funded"  className={activePage === 'self-funded'  ? 'active' : ''}> دراسة في الخارج</Link></li>
         <li><Link href="/guides"       className={activePage === 'guides'       ? 'active' : ''}> دليل الطالب</Link></li>
         <li><Link href="/#how"                                                                  >كيف نعمل</Link></li>
