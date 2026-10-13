@@ -12,6 +12,8 @@ import HeroVisual from "./components/HeroVisual";
 import Stats from "./components/Stats";
 import ScholarshipsSection from "./components/ScholarshipsSection";
 import SelfFundedAdmission from "./components/SelfFundedAdmission";
+import Testimonials from "./components/Testimonials";
+import Services from "./components/Services";
 
 import {
   Sparkles,
@@ -120,56 +122,9 @@ export default function HomeClient({
       {/* SCHOLARSHIPS */}
       <ScholarshipsSection />
       {/* SERVICES */}
-      <section className="services" id="services">
-        <div className="section-header">
-          <span className="section-eyebrow">ما نقدمه</span>
-          <h2>دعم متكامل للمنح الدراسية</h2>
-          <p>
-            من إعداد الوثائق حتى التقديم النهائي — نتولى كل تفاصيل رحلتك
-            الدراسية.
-          </p>
-        </div>
-        <div className="srv-grid">
-          {[
-            {
-              icon: <FileText size={28} color="#2FA889" />,
-              title: "إعداد الوثائق",
-              desc: "مساعدة احترافية في كتابة خطاب النية والسيرة الذاتية وخطابات التوصية وجميع وثائق التقديم.",
-            },
-            {
-              icon: <Target size={28} color="#2FA889" />,
-              title: "مطابقة المنح",
-              desc: "نجد أفضل المنح المناسبة لملفك الأكاديمي وأهدافك باستخدام تقنيات ذكية.",
-            },
-            {
-              icon: <Globe size={28} color="#2FA889" />,
-              title: "تقديم الطلبات",
-              desc: "دعم متكامل للتقديم المباشر على بوابات المنح مع متابعة الحالة باستمرار.",
-            },
-            {
-              icon: <MessageCircle size={28} color="#2FA889" />,
-              title: "تدريب المقابلات",
-              desc: "جلسات تدريبية شخصية ومحاكاة للمقابلات لمساعدتك على الأداء بثقة.",
-            },
-            {
-              icon: <Plane size={28} color="#2FA889" />,
-              title: "دعم ما قبل السفر",
-              desc: "إرشادات التأشيرة، نصائح السكن، والتوجيه الثقافي للحياة في الخارج.",
-            },
-            {
-              icon: <BarChart3 size={28} color="#2FA889" />,
-              title: "تتبع التقدم",
-              desc: "تحديثات فورية على حالة طلبك عبر نظامنا وإشعارات واتساب المباشرة.",
-            },
-          ].map((service) => (
-            <div key={service.title} className="srv-card">
-              <div className="srv-icon">{service.icon}</div>
-              <h3>{service.title}</h3>
-              <p>{service.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+
+      <Services />
+      
 
       {/* HOW IT WORKS */}
       <section className="how" id="how">
@@ -211,6 +166,9 @@ export default function HomeClient({
       </section>
 
       {/* STORIES */}
+
+      <Testimonials/>
+
       <section className="stories" id="stories">
         <div className="section-header">
           <span className="section-eyebrow">شهادات الطلاب</span>

@@ -2,7 +2,6 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import {
@@ -17,6 +16,9 @@ import {
 
 } from 'lucide-react'
 import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa'
+// طبقة تعتيم كحلية فوق الصورة + تدرّج احتياطي لو الصورة مش موجودة
+const OFFICE_BG = (alpha: number) =>
+  `linear-gradient(135deg, rgba(18,40,69,${alpha}) 0%, rgba(27,58,92,${alpha - 0.08}) 50%, rgba(26,92,66,${alpha - 0.04}) 100%), url(/contact/office.jpg), linear-gradient(135deg, #122845 0%, #1B3A5C 50%, #1a5c42 100%)`
 
 export default function ContactPage() {
   const [formState, setFormState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
@@ -53,7 +55,9 @@ export default function ContactPage() {
 
       {/* ✅ HERO */}
       <div style={{
-        background: 'linear-gradient(135deg, #122845 0%, #1B3A5C 50%, #1a5c42 100%)',
+        backgroundImage: OFFICE_BG(0.88),
+backgroundSize: 'cover',
+backgroundPosition: 'center',
         padding: 'clamp(50px, 6vw, 80px) 5%',
         textAlign: 'center',
         position: 'relative',
@@ -561,7 +565,9 @@ export default function ContactPage() {
 
       {/* ✅ CTA BANNER */}
       <div style={{
-        background: 'linear-gradient(135deg, #122845 0%, #1B3A5C 50%, #1a5c42 100%)',
+       backgroundImage: OFFICE_BG(0.92),
+backgroundSize: 'cover',
+backgroundPosition: 'center',
         padding: 'clamp(32px, 4vw, 48px) 5%',
         textAlign: 'center',
       }}>
@@ -572,7 +578,7 @@ export default function ContactPage() {
             color: '#fff',
             marginBottom: 8,
           }}>
-            🎯 جاهز تبدأ رحلتك الأكاديمية؟
+            جاهز تبدأ رحلتك الأكاديمية؟
           </h3>
           <p style={{
             fontSize: 'clamp(14px, 1vw, 16px)',

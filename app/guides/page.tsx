@@ -13,7 +13,7 @@ const GUIDES = [
     flag: '🇪🇬',
     image: '/images/egypt-guide.jpg',
     description:
-  'دليل الدراسة في مصر للطلاب السودانيين: الجامعات، القبول، المنح، التكاليف والتأشيرة.',
+      'دليل الدراسة في مصر للطلاب السودانيين: الجامعات، القبول، المنح، التكاليف والتأشيرة.',
 
     articles: 12,
     universities: '50+',
@@ -53,12 +53,15 @@ const GUIDES = [
 
 export default function GuidesPage() {
   return (
-    <div dir="rtl" style={{background: '#f4f7fb', minHeight: '100vh' }}>
+    <div dir="rtl" style={{ background: '#f4f7fb', minHeight: '100vh' }}>
       <Navbar activePage="guides" />
 
       {/* HERO */}
       <div style={{
-        background: 'linear-gradient(135deg, #122845 0%, #1B3A5C 50%, #1a5c42 100%)',
+        backgroundImage:
+          "linear-gradient(135deg, rgba(18,40,69,.88) 0%, rgba(27,58,92,.82) 50%, rgba(26,92,66,.84) 100%), url('/images/guides-hero.jpg'), linear-gradient(135deg, #122845 0%, #1B3A5C 50%, #1a5c42 100%)",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         padding: 'clamp(60px, 8vw, 100px) 5%',
         textAlign: 'center',
         position: 'relative',
@@ -76,7 +79,7 @@ export default function GuidesPage() {
             fontWeight: 700,
             marginBottom: 20,
           }}>
-             أدلة الطالب
+            أدلة الطالب
           </div>
           <h1 style={{
             fontSize: 'clamp(32px, 5vw, 48px)',
@@ -121,25 +124,35 @@ export default function GuidesPage() {
                 cursor: 'pointer',
                 height: '100%',
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-6px)'
-                e.currentTarget.style.boxShadow = '0 16px 48px rgba(27,58,92,.12)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = 'none'
-              }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-6px)'
+                  e.currentTarget.style.boxShadow = '0 16px 48px rgba(27,58,92,.12)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = 'none'
+                }}
               >
                 <div style={{
                   height: 140,
-                  background: `linear-gradient(135deg, ${guide.color}dd, ${guide.color})`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 56,
                   position: 'relative',
+                  backgroundImage: `linear-gradient(to top, ${guide.color}cc 0%, ${guide.color}33 60%, transparent 100%), url(${guide.image}), linear-gradient(135deg, ${guide.color}dd, ${guide.color})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
                 }}>
-                  <span>{guide.flag}</span>
+                  <span style={{
+                    position: 'absolute',
+                    top: 12,
+                    insetInlineStart: 12,
+                    fontSize: 22,
+                    lineHeight: 1,
+                    padding: '5px 9px',
+                    borderRadius: 10,
+                    background: 'rgba(255,255,255,.92)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,.18)',
+                  }}>
+                    {guide.flag}
+                  </span>
                 </div>
                 <div style={{ padding: '20px 22px 22px' }}>
                   <h3 style={{

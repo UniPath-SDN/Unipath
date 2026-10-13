@@ -1,0 +1,110 @@
+/* components/testimonials.css
+   بيعتمد على الكلاسات الموجودة في موقعك (stories, story-card, avatar...) 
+   ويضيف بس الجديد (tm-*) + دعم صورة الطالب داخل .avatar */
+
+.avatar.has-photo { padding: 0; overflow: hidden; }
+.avatar.has-photo img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: inherit; }
+
+.tm-block { margin-top: 56px; }
+.tm-block-title {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--navy, #1b3a5c);
+  margin: 0 0 24px;
+}
+
+/* سكرينات واتساب */
+.tm-shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.tm-shot {
+  border: 0;
+  padding: 0;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: zoom-in;
+  box-shadow: 0 4px 18px rgba(15, 34, 54, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tm-shot:hover,
+.tm-shot:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(15, 34, 54, 0.16);
+  outline: 2px solid var(--teal, #2fa889);
+  outline-offset: 2px;
+}
+.tm-shot img { width: 100%; height: 100%; display: block; object-fit: cover; aspect-ratio: 3 / 4; }
+
+/* وصلوا وجهتهم */
+.tm-arrivals {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 18px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.tm-arrival {
+  position: relative;
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: #e2e8f0;
+}
+.tm-arrival img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tm-arrival figcaption {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 28px 14px 12px;
+  color: #fff;
+  background: linear-gradient(to top, rgba(10, 30, 58, 0.85), transparent);
+}
+.tm-arrival figcaption strong { font-size: 0.95rem; }
+.tm-arrival figcaption span { font-size: 0.78rem; opacity: 0.9; }
+
+/* Lightbox */
+.tm-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(5, 15, 30, 0.85);
+  cursor: zoom-out;
+}
+.tm-lightbox img {
+  max-width: min(92vw, 560px);
+  max-height: 90vh;
+  border-radius: 12px;
+  cursor: default;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.tm-lightbox-close {
+  position: absolute;
+  top: 16px;
+  inset-inline-start: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.tm-lightbox-close:hover { background: rgba(255, 255, 255, 0.28); }
