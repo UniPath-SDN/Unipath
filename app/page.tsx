@@ -1,14 +1,15 @@
+
 import type { Metadata } from 'next'
 import HomeClient from './HomeClient'
+import WebsiteSchema from './website-schema'
 
 export const metadata: Metadata = {
-  title: 'UniPath — منصة المنح الدراسية',
+  title: 'UniPath',
   description: 'ابحث عن منحتك وقدّم مع فريق UniPath',
   alternates: {
     canonical: '/',
   },
 }
-
 
 async function getScholarships() {
   try {
@@ -16,6 +17,7 @@ async function getScholarships() {
       `${process.env.NEXT_PUBLIC_API_URL}/scholarships/`,
       { next: { revalidate: 3600 } }
     )
+
     if (!res.ok) return []
     return res.json()
   } catch {
@@ -25,5 +27,11 @@ async function getScholarships() {
 
 export default async function HomePage() {
   const scholarships = await getScholarships()
-  return <HomeClient scholarships={scholarships} />
+
+  return (
+    <>
+      <WebsiteSchema />
+      <HomeClient scholarships={scholarships} />
+    </>
+  )
 }

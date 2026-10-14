@@ -1,20 +1,16 @@
+
 import type { Metadata, Viewport } from 'next'
-
-
 import './globals.css'
 
-
 export const metadata: Metadata = {
-  // ✅ العنوان الأساسي
   title: {
     default: 'UniPath | منصة المنح الدراسية',
     template: '%s | UniPath',
   },
 
-  // ✅ الوصف
-  description: 'منصة UniPath — مختصون في المنح الدراسية والتقديم على الجامعات العالمية، فرص التطوع، الكورسات، القبولات الخاصة، وخدمات الوثائق الأكاديمية.',
+  description:
+    'منصة UniPath — مختصون في المنح الدراسية والتقديم على الجامعات العالمية، فرص التطوع، الكورسات، القبولات الخاصة، وخدمات الوثائق الأكاديمية.',
 
-  // ✅ الكلمات المفتاحية
   keywords: [
     'منح دراسية',
     'المنح الدراسية',
@@ -27,30 +23,24 @@ export const metadata: Metadata = {
     'سيرة ذاتية',
   ],
 
-  // ✅ معلومات الموقع
   metadataBase: new URL('https://www.unipathsdn.com'),
 
-  // ✅ Open Graph (للسوشيال ميديا)
   openGraph: {
     title: 'UniPath | منصة المنح الدراسية',
     description:
       'منصة UniPath للمنح الدراسية والقبول الجامعي والتقديم على الجامعات العالمية.',
     url: 'https://www.unipathsdn.com/',
     siteName: 'UniPath',
-    locale: 'ar_SA',
+    locale: 'ar',
     type: 'website',
   },
 
-
-  // ✅ Twitter
- twitter: {
+  twitter: {
     card: 'summary_large_image',
-    title: 'UniPath | منصة المنح الدراسية',
+    title: 'UniPath',
     description:
       'اكتشف المنح الدراسية وخدمات القبول الجامعي مع UniPath.',
   },
-
-  // ✅ للتحكم في الفهرسة
 
   robots: {
     index: true,
@@ -64,16 +54,10 @@ export const metadata: Metadata = {
     },
   },
 
-icons: {
-  icon: [
-    {
-      url: '/logo.png',
-      type: 'image/png',
-    },
-  ],
-  apple: '/apple-touch-icon.png',
-},
-
+  icons: {
+    icon: [{ url: '/logo.png', type: 'image/png' }],
+    apple: '/apple-touch-icon.png',
+  },
 }
 
 export const viewport: Viewport = {
@@ -88,7 +72,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ar" dir="rtl" >
+    <html lang="ar" dir="rtl">
       <body>{children}</body>
     </html>
   )
