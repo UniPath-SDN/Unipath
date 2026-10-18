@@ -1,51 +1,153 @@
-@keyframes slideDown {
+/* navbar.css
+   تغيير مهم: الـ selector بقى .site-nav بدل nav، عشان ما يأثر على أي عنصر <nav>
+   تاني في الموقع (فوتر، breadcrumbs...). */
+
+@keyframes navSlideDown {
   from { transform: translateY(-100%); opacity: 0; }
   to   { transform: translateY(0);     opacity: 1; }
 }
-
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 60px;
-  background: rgba(255,255,255,.93);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid #e2eaf2;
-  animation: slideDown .6s ease both;
+@keyframes navMenuIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px clamp(20px, 4vw, 60px);
+  background: rgba(255, 255, 255, 0.88);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom: 1px solid #e2eaf2;
+  animation: navSlideDown 0.6s ease both;
+  transition: padding 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+.site-nav.scrolled {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 6px 24px rgba(18, 40, 69, 0.08);
+}
+
+/* (محفوظة: ممكن LogoIcon يعتمد عليها) */
 .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 .nav-logo-icon { width: 44px; height: 44px; border-radius: 12px; background: #1B3A5C; display: flex; align-items: center; justify-content: center; }
 .nav-logo-text { font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 1.5rem; color: #1B3A5C; }
 .nav-logo-text .teal { color: #2FA889; }
 
-.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
-.nav-links a { text-decoration: none; font-size: .95rem; font-weight: 600; color: #4a6580; transition: color .2s; }
-.nav-links a:hover { color: #1B3A5C; }
-.nav-links a.active { color: #1B3A5C; font-weight: 800; border-bottom: 2px solid #2FA889; padding-bottom: 2px; }
+/* ── الروابط (ديسكتوب) */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(2px, 0.5vw, 8px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-links a:not(.nav-cta-btn) {
+  display: block;
+  padding: 8px clamp(8px, 0.95vw, 14px);
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #4a6580;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-links a:not(.nav-cta-btn):hover { background: #f0f6fa; color: #1B3A5C; }
+.nav-links a.active { background: #e6f7f3; color: #1B3A5C; font-weight: 800; }
+.nav-links a:focus-visible,
+.nav-menu-btn:focus-visible { outline: 2px solid #2FA889; outline-offset: 2px; }
 
 .nav-cta-btn {
-  background: #2FA889; color: white;
-  padding: 10px 26px; border-radius: 50px;
-  font-weight: 700; font-size: .9rem;
-  box-shadow: 0 4px 16px rgba(47,168,137,.3);
-  text-decoration: none; transition: all .2s;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-inline-start: 6px;
+  padding: 10px 22px;
+  border-radius: 50px;
+  background: #2FA889;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(47, 168, 137, 0.3);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
-.nav-cta-btn:hover { background: #3cc4a0; transform: translateY(-1px); }
+.nav-cta-btn:hover { background: #3cc4a0; transform: translateY(-1px); box-shadow: 0 8px 22px rgba(47, 168, 137, 0.35); }
 
-.nav-menu-btn { display: none; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #1B3A5C; }
-
-@media(max-width: 1024px) {
-  nav { padding: 14px 30px; }
+/* ── زر القائمة + الـ overlay (مخفيين على الديسكتوب) */
+.nav-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #e2eaf2;
+  border-radius: 12px;
+  background: #fff;
+  color: #1B3A5C;
+  cursor: pointer;
 }
-@media(max-width: 768px) {
-  nav { padding: 14px 20px; }
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(10, 30, 58, 0.35);
+}
+
+/* ── تابلت وموبايل: القائمة المنسدلة
+   رفعنا نقطة التحول من 768 إلى 1180، لأن 9 عناصر ما بتكفي في صف واحد
+   على التابلت (كانت بتتكسر/تتراكب بين 769 و ~1100). */
+@media (max-width: 1180px) {
+  .nav-menu-btn { display: inline-flex; }
+
   .nav-links {
-    display: none; flex-direction: column;
-    position: absolute; top: 100%; right: 0; left: 0;
-    background: white; padding: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,.1); gap: 16px;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 12px 16px 20px;
+    background: #fff;
+    border-bottom: 1px solid #e2eaf2;
+    box-shadow: 0 16px 40px rgba(18, 40, 69, 0.14);
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
   }
-  .nav-links.open { display: flex !important; }
-  .nav-menu-btn { display: block; }
+  .nav-links.open { display: flex; animation: navMenuIn 0.2s ease both; }
+
+  .nav-links a:not(.nav-cta-btn) { padding: 14px 16px; font-size: 1rem; border-radius: 12px; }
+
+  .nav-links li:last-child { margin-top: 8px; }
+  .nav-cta-btn { width: 100%; justify-content: center; margin-inline-start: 0; padding: 14px; font-size: 1rem; }
+}
+
+/* تابلت (601–1180): شبكة عمودين بدل قائمة طويلة، والـ CTA بعرض كامل */
+@media (min-width: 601px) and (max-width: 1180px) {
+  .nav-links.open {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 10px;
+    padding: 16px 28px 24px;
+  }
+  .nav-links li:last-child { grid-column: 1 / -1; }
+}
+
+@media (min-width: 1181px) {
+  .nav-overlay { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav, .nav-links.open { animation: none; }
+  .site-nav, .nav-cta-btn, .nav-links a { transition: none; }
 }
