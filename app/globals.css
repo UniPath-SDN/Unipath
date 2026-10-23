@@ -1,3 +1,90 @@
+/* app/globals.css */
+
+/* الخط الأساسي للموقع */
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" );
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-app: "Cairo", system-ui, -apple-system, sans-serif;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html,
+  body {
+    font-family: var(--font-app);
+    direction: rtl;
+    color: #0f2236;
+    overflow-x: hidden;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes floatBadge {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes progressFill {
+    from {
+      width: 0;
+    }
+
+    to {
+      width: 72%;
+    }
+  }
+}
+
 /* ===== أقسام الطلاب والريفيوهات ===== */
 
 .students-section,
@@ -119,7 +206,7 @@
   font-size: 0.85rem;
 }
 
-/* أزرار التنقل */
+/* أزرار التنقل في السلايدر */
 .reviews-slider-controls {
   display: flex;
   justify-content: flex-start;
@@ -149,7 +236,7 @@
   background: #244b3b;
 }
 
-/* السلايدر */
+/* سلايدر الريفيوهات */
 .reviews-slider {
   display: flex;
   gap: 20px;
@@ -166,7 +253,7 @@
   scroll-snap-align: start;
 }
 
-/* زر فتح صورة الريفيو */
+/* زر تكبير صورة الريفيو */
 .review-open-button {
   display: block;
   width: 100%;
@@ -260,7 +347,7 @@
   outline-offset: 3px;
 }
 
-/* شاشات متوسطة */
+/* الشاشات المتوسطة */
 @media (max-width: 900px) {
   .students-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -271,7 +358,7 @@
   }
 }
 
-/* هواتف */
+/* الهواتف */
 @media (max-width: 600px) {
   .students-section,
   .reviews-section {
@@ -339,7 +426,7 @@
   }
 }
 
-/* احترام إعداد تقليل الحركة */
+/* احترام إعداد المستخدم لتقليل الحركة */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -355,21 +442,5 @@
 
   .reviews-slider {
     scroll-behavior: auto;
-  }
-}
-
-
-/* احترام إعداد المستخدم لتقليل الحركة */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
   }
 }
