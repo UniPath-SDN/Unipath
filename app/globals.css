@@ -1,81 +1,375 @@
-/* app/globals.css */
+/* ===== أقسام الطلاب والريفيوهات ===== */
 
-/* ✅ الخط الوحيد في الموقع — غيّره من هنا فقط */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap');
+.students-section,
+.reviews-section {
+  width: min(calc(100% - 48px), 1200px);
+  margin-inline: auto;
+  padding-block: clamp(48px, 7vw, 88px);
+}
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.section-header {
+  max-width: 700px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
 
-@layer base {
-  /* ✅ مكان واحد لتغيير الخط في الموقع كله */
-  :root {
-    --font-app: 'Cairo', system-ui, -apple-system, sans-serif;
+.section-eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #244b3b;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.section-header h2 {
+  margin: 0;
+  color: #0f2236;
+  font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+  line-height: 1.35;
+}
+
+.section-header p {
+  margin-top: 12px;
+  color: #66716a;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+/* شبكة صور الطلاب */
+.students-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+/* البطاقات */
+.student-card,
+.review-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #e5ebe6;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(21 40 28 / 6%);
+}
+
+.student-image-wrap,
+.review-image-wrap {
+  position: relative;
+  overflow: hidden;
+  background: #f3f5f3;
+}
+
+.student-image-wrap {
+  aspect-ratio: 4 / 3;
+}
+
+.review-image-wrap {
+  display: block;
+  aspect-ratio: 4 / 3;
+}
+
+.student-image,
+.review-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.student-image {
+  object-fit: cover;
+}
+
+.review-image {
+  object-fit: contain;
+}
+
+.student-card-content,
+.review-card-content {
+  padding: 18px;
+}
+
+.student-card-content h3 {
+  margin: 7px 0 4px;
+  color: #0f2236;
+  font-size: 1.15rem;
+}
+
+.student-card-content p,
+.review-card-content p {
+  margin-top: 6px;
+  color: #66716a;
+  line-height: 1.7;
+}
+
+.student-country,
+.review-source {
+  color: #244b3b;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.student-scholarship {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #244b3b;
+  background: #edf4ef;
+  font-size: 0.85rem;
+}
+
+/* أزرار التنقل */
+.reviews-slider-controls {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.slider-arrow {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid #dce5de;
+  border-radius: 50%;
+  color: #244b3b;
+  background: #fff;
+  font: inherit;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+.slider-arrow:hover {
+  color: #fff;
+  background: #244b3b;
+}
+
+/* السلايدر */
+.reviews-slider {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 4px 2px 18px;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.reviews-slider .review-card {
+  flex: 0 0 calc((100% - 40px) / 3);
+  scroll-snap-align: start;
+}
+
+/* زر فتح صورة الريفيو */
+.review-open-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  text-align: inherit;
+  cursor: zoom-in;
+}
+
+.review-zoom-hint {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: #fff;
+  background: rgb(0 0 0 / 68%);
+  font-size: 0.8rem;
+}
+
+/* نافذة عرض الريفيو المكبّر */
+.review-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgb(0 0 0 / 72%);
+}
+
+.review-modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 850px);
+  max-height: 92vh;
+  overflow: auto;
+  padding: 24px;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.review-modal-close {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  left: 12px;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  color: #222;
+  background: #f0f2f0;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.review-modal-title {
+  margin: 0 48px 16px 0;
+  font-size: 1.15rem;
+}
+
+.review-modal-image-wrap {
+  position: relative;
+  width: 100%;
+  height: min(68vh, 750px);
+}
+
+.review-modal-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.review-modal-caption {
+  margin-top: 14px;
+  color: #59645d;
+  line-height: 1.7;
+}
+
+.review-open-button:focus-visible,
+.slider-arrow:focus-visible,
+.review-modal-close:focus-visible {
+  outline: 3px solid #4b8065;
+  outline-offset: 3px;
+}
+
+/* شاشات متوسطة */
+@media (max-width: 900px) {
+  .students-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reviews-slider .review-card {
+    flex-basis: calc((100% - 20px) / 2);
+  }
+}
+
+/* هواتف */
+@media (max-width: 600px) {
+  .students-section,
+  .reviews-section {
+    width: min(calc(100% - 32px), 1200px);
+    padding-block: 48px;
+  }
+
+  .section-header {
+    margin-bottom: 24px;
+  }
+
+  .section-header p {
+    font-size: 0.95rem;
+  }
+
+  .students-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .student-card,
+  .review-card {
+    border-radius: 14px;
+  }
+
+  .student-image-wrap {
+    aspect-ratio: 16 / 10;
+  }
+
+  .student-card-content,
+  .review-card-content {
+    padding: 16px;
+  }
+
+  .reviews-slider {
+    gap: 14px;
+  }
+
+  .reviews-slider .review-card {
+    flex-basis: 86%;
+  }
+
+  .slider-arrow {
+    width: 42px;
+    height: 42px;
+  }
+
+  .review-modal-backdrop {
+    padding: 12px;
+  }
+
+  .review-modal {
+    max-height: 94vh;
+    padding: 18px 14px;
+    border-radius: 14px;
+  }
+
+  .review-modal-image-wrap {
+    height: 68vh;
+  }
+
+  .review-modal-close {
+    top: 8px;
+    left: 8px;
+  }
+}
+
+/* احترام إعداد تقليل الحركة */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 
   *,
   *::before,
   *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 
+  .reviews-slider {
+    scroll-behavior: auto;
+  }
+}
+
+
+/* احترام إعداد المستخدم لتقليل الحركة */
+@media (prefers-reduced-motion: reduce) {
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
 
-  html,
-  body {
-    font-family: var(--font-app);
-    direction: rtl;
-    color: #0f2236;
-    overflow-x: hidden;
-  }
-
-  /* ⚠️ مهم: اجعل كل العناصر ترث الخط */
-  button,
-  input,
-  select,
-  textarea {
-    font-family: inherit;
-  }
-
-  @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes slideDown {
-    from {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  @keyframes floatBadge {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-  @keyframes progressFill {
-    from {
-      width: 0;
-    }
-    to {
-      width: 72%;
-    }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

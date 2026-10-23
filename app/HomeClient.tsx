@@ -14,6 +14,9 @@ import ScholarshipsSection from "./components/ScholarshipsSection";
 import SelfFundedAdmission from "./components/SelfFundedAdmission";
 import Testimonials from "./components/Testimonials";
 import Services from "./components/Services";
+import ReviewsSection from "./components/ReviewsSection";
+import StudentsSection from "./components/StudentsSection";
+
 
 import {
   Sparkles,
@@ -166,53 +169,13 @@ export default function HomeClient({
       </section>
 
       {/* STORIES */}
-
+      <StudentsSection />
+      <ReviewsSection />
       <Testimonials/>
 
-      <section className="stories" id="stories">
-        <div className="section-header">
-          <span className="section-eyebrow">شهادات الطلاب</span>
-          <h2>طلاب حققوا أحلامهم</h2>
-          <p>قصص حقيقية من طلاب حققوا أحلامهم بدعم يونيباث.</p>
-        </div>
-        <div className="stories-grid">
-          {[
-            {
-              av: "av1",
-              init: "أ",
-              name: "أحمد حسن",
-              dest: "🇩🇪 DAAD ألمانيا · هندسة",
-              text: "يونيباث جعل عملية التقديم على منحة DAAD سلسة تماماً. مسؤولي كان متاحاً دائماً على واتساب وأرشدني في كل وثيقة. الآن أدرس في ميونخ!",
-            },
-            {
-              av: "av2",
-              init: "س",
-              name: "سارة الراشدي",
-              dest: "🇬🇧 Chevening UK · إدارة أعمال",
-              text: "لم أكن أعرف كيف أكتب SOP جيداً. حوّل فريق يونيباث طلبي بالكامل. تم قبولي في Chevening من أول محاولة. أنصح به بشدة!",
-            },
-            {
-              av: "av3",
-              init: "م",
-              name: "محمد فاروق",
-              dest: "🇹🇷 تركيا بورصلاري · طب",
-              text: "وجد لي يونيباث منحة ممولة بالكامل لم أكن أعلم بوجودها. محترفون وسريعون ويهتمون فعلاً بنجاح الطلاب.",
-            },
-          ].map((s) => (
-            <div key={s.name} className="story-card">
-              <div className="stars">★★★★★</div>
-              <p className="story-text">{s.text}</p>
-              <div className="author">
-                <div className={`avatar ${s.av}`}>{s.init}</div>
-                <div>
-                  <div className="author-name">{s.name}</div>
-                  <div className="author-dest">{s.dest}</div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+     
+      {/* ✅ الدراسة على النفقة الخاصة */}
+      <SelfFundedAdmission />
 
       {/* SELF-FUNDED ADMISSION */}
       <section className="admission-section">
@@ -386,9 +349,6 @@ export default function HomeClient({
           </div>
         </div>
       </section>
-      {/* ✅ الدراسة على النفقة الخاصة */}
-      <SelfFundedAdmission />
-
       {/* CTA */}
       <section className="cta-section">
         <h2>هل أنت مستعد لبدء رحلتك؟</h2>
